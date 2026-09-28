@@ -136,7 +136,6 @@
     align-items: center;
     justify-content: center;
   }
-  #themeToggle:hover { color: var(--accent); border-color: var(--accent); }
 
   #track {
     flex: 1 1 auto;
@@ -247,7 +246,6 @@
     cursor: pointer;
     direction: ltr;
   }
-  .font-toggle:hover { color: var(--accent); border-color: var(--accent); }
   .card .text p { margin: 0 0 1em; }
   .card .text p:last-child { margin-bottom: 0; }
   .card .foot {
@@ -292,7 +290,6 @@
     justify-content: center;
   }
   .size-btn { font-size: 1.3rem; }
-  .size-btn:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
   #aboutBtn { font-size: 1.05rem; font-style: italic; font-weight: 700; margin-inline-end: .25rem; }
 
   #about {
@@ -342,7 +339,6 @@
     line-height: 1;
     cursor: pointer;
   }
-  #aboutClose:hover { color: var(--accent); border-color: var(--accent); }
   .size-btn:disabled { opacity: .35; cursor: default; }
   #progress {
     height: 4px;
@@ -376,11 +372,18 @@
     justify-content: center;
     opacity: .9;
   }
-  .nav:hover { opacity: 1; border-color: var(--accent); color: var(--accent); }
   .nav:disabled { opacity: .25; cursor: default; }
   #nextBtn { left: .5rem; }
   #prevBtn { right: .5rem; }
   @media (pointer: coarse) { .nav { display: none; } }
+  /* Hover styles only on devices with a real pointer; iOS otherwise keeps them after a tap. */
+  @media (hover: hover) {
+    #themeToggle:hover { color: var(--accent); border-color: var(--accent); }
+    .font-toggle:hover { color: var(--accent); border-color: var(--accent); }
+    .size-btn:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
+    #aboutClose:hover { color: var(--accent); border-color: var(--accent); }
+    .nav:hover { opacity: 1; border-color: var(--accent); color: var(--accent); }
+  }
 </style>
 </head>
 <body>
