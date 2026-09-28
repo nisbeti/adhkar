@@ -10,9 +10,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="الأذكار">
 <title>الأذكار</title>
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="manifest" href="manifest.webmanifest?v=1">
+<link rel="icon" href="icon.svg?v=1" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-180.png?v=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
@@ -609,8 +609,34 @@ themeToggle.addEventListener("click", () => {
 
 systemDark.addEventListener("change", applyTheme);
 
+/* ---------- Updates ---------- */
+/* Home-screen apps on iOS often resume an old copy of the page, so check for a newer deploy on resume. */
+let loadedPageVersion = null;
+
+async function livePageVersion() {
+  try {
+    const response = await fetch(location.pathname, { method: "HEAD", cache: "no-store" });
+    return response.ok ? (response.headers.get("etag") || response.headers.get("last-modified")) : null;
+  } catch (_) {
+    return null;
+  }
+}
+
+document.addEventListener("visibilitychange", async () => {
+  if (document.visibilityState !== "visible" || !loadedPageVersion) { return; }
+  const liveVersion = await livePageVersion();
+  if (liveVersion && liveVersion !== loadedPageVersion) {
+    location.reload();
+  }
+});
+
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  navigator.serviceWorker.register("sw.js").catch(() => { /* offline support is optional */ });
+}
+
 applyTheme();
 render(listForNow());
+livePageVersion().then(version => { loadedPageVersion = version; });
 </script>
 </body>
 </html>
