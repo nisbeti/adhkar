@@ -29,6 +29,7 @@
     --ink: #2a251d;
     --muted: #7d7462;
     --accent: #b5542a;
+    --jalalah: #c1272d;
     --line: #e4dccb;
     --shadow: 0 10px 30px rgba(60, 40, 10, .08);
   }
@@ -39,6 +40,7 @@
       --ink: #efe7d6;
       --muted: #a89e88;
       --accent: #e08a5c;
+      --jalalah: #ff6b64;
       --line: #3a352c;
       --shadow: 0 10px 30px rgba(0, 0, 0, .35);
     }
@@ -49,6 +51,7 @@
     --ink: #efe7d6;
     --muted: #a89e88;
     --accent: #e08a5c;
+    --jalalah: #ff6b64;
     --line: #3a352c;
     --shadow: 0 10px 30px rgba(0, 0, 0, .35);
   }
@@ -216,6 +219,7 @@
     margin-inline-end: .35em;
     font-variant-numeric: tabular-nums;
   }
+  .jalalah { color: var(--jalalah); }
   .credit { color: var(--muted); font-size: .85rem; line-height: 1.5; }
   .credit a { color: inherit; }
 
@@ -703,6 +707,29 @@ function toArabicDigits(number) {
   return String(number).replace(/\d/g, digit => "٠١٢٣٤٥٦٧٨٩"[digit]);
 }
 
+/* Lafz al-jalalah: any word whose letters are Allah, with an optional wa/fa, bi/ta/ka or li prefix, or Allahumma. */
+const JALALAH_PATTERN = /^(?:[وف]?[بتك]?الله|[وف]?لله)م?$/;
+
+function arabicLetters(word) {
+  return word.replace(/\u0671/g, "\u0627").replace(/[^\u0621-\u064A]/g, "");
+}
+
+function markJalalahArabic(text) {
+  return text.split(/(\s+)/).map(part => {
+    if (!JALALAH_PATTERN.test(arabicLetters(part))) { return part; }
+    const [, word, punctuation] = part.match(/^(.*?)([،؛.:!؟,]*)$/);
+    return `<span class="jalalah">${word}</span>${punctuation}`;
+  }).join("");
+}
+
+function markJalalahEnglish(text) {
+  return text.replace(/\bAllah\b/g, '<span class="jalalah">Allah</span>');
+}
+
+function markJalalah(text, lang) {
+  return lang === "ar" ? markJalalahArabic(text) : markJalalahEnglish(text);
+}
+
 function createPage(lang, extraClass = "") {
   const page = document.createElement("section");
   page.className = `page ${lang === "ar" ? "arabic" : "english"} ${extraClass}`.trim();
@@ -730,8 +757,9 @@ function cardHtml(positionLabel, lang, body, foot = "") {
 
 function buildDhikrPage(dhikr, position, total, lang) {
   const page = createPage(lang);
-  const title = lang === "ar" ? dhikr.title_ar : dhikr.title_en;
-  const paragraphs = (lang === "ar" ? dhikr.ar : dhikr.en).map(p => `<p>${p}</p>`).join("");
+  const rawTitle = lang === "ar" ? dhikr.title_ar : dhikr.title_en;
+  const title = rawTitle ? markJalalah(rawTitle, lang) : "";
+  const paragraphs = (lang === "ar" ? dhikr.ar : dhikr.en).map(p => `<p>${markJalalah(p, lang)}</p>`).join("");
   const repeat = repeatLabel(dhikr.repeat);
   const positionLabel = lang === "ar" ? `الذكر ${position} من ${total}` : `Dhikr ${position} of ${total}`;
   page.innerHTML = cardHtml(
@@ -753,16 +781,16 @@ function buildVersePage(verses, position, total, lang) {
   let body;
   if (lang === "ar") {
     const uthmani = verses
-      .map(verse => `${verse.ar} <span class="ayah-end">&#x06DD;${toArabicDigits(verse.n)}</span>`)
+      .map(verse => `${markJalalahArabic(verse.ar)} <span class="ayah-end">&#x06DD;${toArabicDigits(verse.n)}</span>`)
       .join(" ");
     /* The IndoPak text carries its own numbered verse icons, drawn by the IndoPak font. */
-    const indopak = verses.map(verse => verse.ar_indopak).join(" ");
+    const indopak = verses.map(verse => markJalalahArabic(verse.ar_indopak)).join(" ");
     body = `
-      <div class="when-amiri">${isOpening ? `<h2 class="basmalah">${KAHF.basmalah_ar}</h2>` : ""}<p>${uthmani}</p></div>
-      <div class="when-indopak">${isOpening ? `<h2 class="basmalah">${KAHF.basmalah_ar_indopak}</h2>` : ""}<p>${indopak}</p></div>`;
+      <div class="when-amiri">${isOpening ? `<h2 class="basmalah">${markJalalahArabic(KAHF.basmalah_ar)}</h2>` : ""}<p>${uthmani}</p></div>
+      <div class="when-indopak">${isOpening ? `<h2 class="basmalah">${markJalalahArabic(KAHF.basmalah_ar_indopak)}</h2>` : ""}<p>${indopak}</p></div>`;
   } else {
-    const text = verses.map(verse => `<p><span class="verse-num">${verse.n}</span>${verse.en}</p>`).join("");
-    body = `${isOpening ? `<h2 class="basmalah">${KAHF.basmalah_en}</h2>` : ""}${text}`;
+    const text = verses.map(verse => `<p><span class="verse-num">${verse.n}</span>${markJalalahEnglish(verse.en)}</p>`).join("");
+    body = `${isOpening ? `<h2 class="basmalah">${markJalalahEnglish(KAHF.basmalah_en)}</h2>` : ""}${text}`;
   }
 
   const indopakCredit = 'IndoPak text and font: Ayman Siddiqui and R. Siddiqua, <a href="https://quranwbw.com" target="_blank" rel="noopener">QuranWBW.com</a> and <a href="https://quran.com" target="_blank" rel="noopener">Quran.com</a>.';
