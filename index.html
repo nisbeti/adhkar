@@ -4,8 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f6f1e7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#1c1a16" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f1e7">
 <title>الأذكار</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +20,7 @@
     --shadow: 0 10px 30px rgba(60, 40, 10, .08);
   }
   @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not([data-theme="light"]) {
       --bg: #1c1a16;
       --card: #26231e;
       --ink: #efe7d6;
@@ -30,6 +29,15 @@
       --line: #3a352c;
       --shadow: 0 10px 30px rgba(0, 0, 0, .35);
     }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1c1a16;
+    --card: #26231e;
+    --ink: #efe7d6;
+    --muted: #a89e88;
+    --accent: #e08a5c;
+    --line: #3a352c;
+    --shadow: 0 10px 30px rgba(0, 0, 0, .35);
   }
 
   * { box-sizing: border-box; }
@@ -65,12 +73,32 @@
   }
   #listToggle .ar { font-size: 1.5rem; font-weight: 700; display: block; }
   #listToggle .en { font-size: .85rem; color: var(--muted); display: block; letter-spacing: .04em; }
+  .header-end {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+  }
   #counter {
     font-size: 1rem;
     color: var(--muted);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
+  #themeToggle {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--muted);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #themeToggle:hover { color: var(--accent); border-color: var(--accent); }
 
   #track {
     flex: 1 1 auto;
@@ -201,7 +229,10 @@
     <span class="ar"></span>
     <span class="en"></span>
   </button>
-  <div id="counter" aria-live="polite"></div>
+  <div class="header-end">
+    <div id="counter" aria-live="polite"></div>
+    <button id="themeToggle" type="button" aria-label="Switch to dark mode"></button>
+  </div>
 </header>
 
 <main id="track" aria-label="Adhkār pages"></main>
@@ -411,6 +442,10 @@ const progress = document.getElementById("progress");
 const listToggle = document.getElementById("listToggle");
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
+const themeToggle = document.getElementById("themeToggle");
+const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+const THEME_KEY = "adhkar:theme";
+const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
 
 let currentList = null;
 let manualOverride = false;
@@ -535,6 +570,39 @@ document.addEventListener("visibilitychange", () => {
   }
 });
 
+/* ---------- Theme ---------- */
+function savedTheme() {
+  try { return localStorage.getItem(THEME_KEY); } catch (_) { return null; }
+}
+
+function currentTheme() {
+  const saved = savedTheme();
+  if (saved === "light" || saved === "dark") { return saved; }
+  return systemDark.matches ? "dark" : "light";
+}
+
+function applyTheme() {
+  const saved = savedTheme();
+  if (saved === "light" || saved === "dark") {
+    document.documentElement.setAttribute("data-theme", saved);
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+  }
+  const dark = currentTheme() === "dark";
+  themeToggle.textContent = dark ? "\u2600" : "\u263E";
+  themeToggle.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+  themeColorMeta.setAttribute("content", dark ? "#1c1a16" : "#f6f1e7");
+}
+
+themeToggle.addEventListener("click", () => {
+  const next = currentTheme() === "dark" ? "light" : "dark";
+  try { localStorage.setItem(THEME_KEY, next); } catch (_) { /* storage unavailable */ }
+  applyTheme();
+});
+
+systemDark.addEventListener("change", applyTheme);
+
+applyTheme();
 render(listForNow());
 </script>
 </body>
