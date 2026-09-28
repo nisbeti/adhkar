@@ -15,7 +15,7 @@
 <link rel="apple-touch-icon" href="icon-180.png?v=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #f6f1e7;
@@ -62,11 +62,11 @@
 
   header {
     flex: 0 0 auto;
-    display: flex;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: calc(.75rem + env(safe-area-inset-top)) 1.25rem .5rem;
+    gap: .5rem;
+    padding: calc(.75rem + env(safe-area-inset-top)) 1rem .5rem;
   }
   #listToggle {
     background: none;
@@ -77,23 +77,48 @@
     padding: 0;
     cursor: pointer;
     line-height: 1.3;
+    justify-self: start;
+    min-width: 0;
   }
-  #listToggle .ar { font-size: 1.5rem; font-weight: 700; display: block; }
-  #listToggle .en { font-size: .85rem; color: var(--muted); display: block; letter-spacing: .04em; }
+  #listToggle:disabled { cursor: default; }
+  #listToggle .ar { font-size: 1.3rem; font-weight: 700; display: block; white-space: nowrap; }
+  #listToggle .en { font-size: .75rem; color: var(--muted); display: block; letter-spacing: .04em; white-space: nowrap; }
+  #sectionMenu {
+    display: flex;
+    border: 1px solid var(--line);
+    background: var(--card);
+    border-radius: 999px;
+    padding: 2px;
+  }
+  #sectionMenu button {
+    background: none;
+    border: 0;
+    border-radius: 999px;
+    color: var(--muted);
+    font: inherit;
+    font-size: 1rem;
+    line-height: 1.4;
+    padding: .2rem .7rem;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  #sectionMenu button[aria-pressed="true"] { background: var(--accent); color: #fff; }
   .header-end {
     display: flex;
     align-items: center;
-    gap: .75rem;
+    gap: .5rem;
+    justify-self: end;
   }
   #counter {
-    font-size: 1rem;
+    font-size: .95rem;
     color: var(--muted);
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
   #themeToggle {
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.1rem;
+    height: 2.1rem;
+    flex: 0 0 auto;
     border-radius: 50%;
     border: 1px solid var(--line);
     background: var(--card);
@@ -168,11 +193,32 @@
     font-style: italic;
   }
   .page.english .card { direction: ltr; }
+  .page.quran.arabic .text {
+    font-family: "Amiri Quran", "Amiri", serif;
+    font-size: clamp(1.55rem, 4.4vw, 2.2rem);
+    line-height: 2.3;
+    text-align: justify;
+    text-align-last: right;
+  }
+  .page.quran.english .text { font-style: normal; font-size: clamp(1.1rem, 3vw, 1.4rem); }
+  .page.quran .basmalah { text-align: center; color: var(--accent); margin: 0 0 1rem; font-weight: 400; font-size: 1.1em; }
+  .page.quran.english .basmalah { font-style: italic; font-size: 1em; }
+  .ayah-end { color: var(--accent); white-space: nowrap; }
+  .verse-num {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: .8em;
+    margin-inline-end: .35em;
+    font-variant-numeric: tabular-nums;
+  }
+  .credit { color: var(--muted); font-size: .85rem; line-height: 1.5; }
+  .credit a { color: inherit; }
   .card .text p { margin: 0 0 1em; }
   .card .text p:last-child { margin-bottom: 0; }
   .card .foot {
     display: flex;
     justify-content: flex-end;
+    gap: 1rem;
     padding-top: .75rem;
     border-top: 1px solid var(--line);
     font-size: 1rem;
@@ -232,17 +278,21 @@
 <body>
 
 <header>
-  <button id="listToggle" type="button" title="Switch between morning and evening" aria-live="polite">
+  <button id="listToggle" type="button" aria-live="polite">
     <span class="ar"></span>
     <span class="en"></span>
   </button>
+  <nav id="sectionMenu" aria-label="Section">
+    <button type="button" data-section="adhkar" aria-pressed="false" aria-label="Adhkār">الأذكار</button>
+    <button type="button" data-section="kahf" aria-pressed="false" aria-label="Sūrat al-Kahf">الكهف</button>
+  </nav>
   <div class="header-end">
     <div id="counter" aria-live="polite"></div>
     <button id="themeToggle" type="button" aria-label="Switch to dark mode"></button>
   </div>
 </header>
 
-<main id="track" aria-label="Adhkār pages"></main>
+<main id="track" aria-label="Pages"></main>
 
 <footer>
   <div id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div></div></div>
@@ -251,6 +301,7 @@
 <button class="nav" id="prevBtn" type="button" aria-label="Previous page">&#x276F;</button>
 <button class="nav" id="nextBtn" type="button" aria-label="Next page">&#x276E;</button>
 
+<script src="kahf.js"></script>
 <script>
 /* ---------- Data: pages 4–7 of the Morning & Evening Adhkār leaflet ---------- */
 /* when: "both" | "morning" | "evening".  A dhikr numbered 8–14 has a morning and an evening wording. */
@@ -436,17 +487,26 @@ const DHIKR = [
 ];
 
 /* ---------- App ---------- */
+const VERSES_PER_PAGE = 5;
+const KAHF_GROUPS = [];
+for (let i = 0; i < KAHF.verses.length; i += VERSES_PER_PAGE) {
+  KAHF_GROUPS.push(KAHF.verses.slice(i, i + VERSES_PER_PAGE));
+}
+
 const LISTS = {
-  morning: { ar: "أذكار الصباح", en: "Morning adhkār", items: DHIKR.filter(d => d.when !== "evening") },
-  evening: { ar: "أذكار المساء", en: "Evening adhkār", items: DHIKR.filter(d => d.when !== "morning") }
+  morning: { ar: "أذكار الصباح", en: "Morning adhkār", items: DHIKR.filter(d => d.when !== "evening"), build: buildDhikrPage },
+  evening: { ar: "أذكار المساء", en: "Evening adhkār", items: DHIKR.filter(d => d.when !== "morning"), build: buildDhikrPage },
+  kahf: { ar: "سورة الكهف", en: "Sūrat al-Kahf", items: KAHF_GROUPS, build: buildVersePage }
 };
 const STORAGE_PREFIX = "adhkar:position:";
+const SECTION_KEY = "adhkar:section";
 
 const track = document.getElementById("track");
 const counter = document.getElementById("counter");
 const progressBar = document.querySelector("#progress > div");
 const progress = document.getElementById("progress");
 const listToggle = document.getElementById("listToggle");
+const sectionButtons = [...document.querySelectorAll("#sectionMenu button")];
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const themeToggle = document.getElementById("themeToggle");
@@ -454,8 +514,10 @@ const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 const THEME_KEY = "adhkar:theme";
 const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
 
+let currentSection = null;
 let currentList = null;
 let manualOverride = false;
+let currentAdhkarChoice = null;
 let pages = [];
 let currentIndex = 0;
 let observer = null;
@@ -464,63 +526,111 @@ function listForNow() {
   return new Date().getHours() < 12 ? "morning" : "evening";
 }
 
+function readStorage(key) {
+  try { return localStorage.getItem(key); } catch (_) { return null; }
+}
+
+function writeStorage(key, value) {
+  try { localStorage.setItem(key, value); } catch (_) { /* storage unavailable */ }
+}
+
 function savedIndex(list) {
-  try {
-    const value = parseInt(localStorage.getItem(STORAGE_PREFIX + list), 10);
-    return Number.isFinite(value) ? value : 0;
-  } catch (_) {
-    return 0;
-  }
+  const value = parseInt(readStorage(STORAGE_PREFIX + list), 10);
+  return Number.isFinite(value) ? value : 0;
 }
 
 function saveIndex(list, index) {
-  try { localStorage.setItem(STORAGE_PREFIX + list, String(index)); } catch (_) { /* storage unavailable */ }
+  writeStorage(STORAGE_PREFIX + list, String(index));
+}
+
+function savedSection() {
+  return readStorage(SECTION_KEY) === "kahf" ? "kahf" : "adhkar";
 }
 
 function repeatLabel(count) {
   return count > 1 ? `${count}×` : "";
 }
 
-function buildPage(dhikr, position, total, lang) {
+function toArabicDigits(number) {
+  return String(number).replace(/\d/g, digit => "٠١٢٣٤٥٦٧٨٩"[digit]);
+}
+
+function createPage(lang, extraClass = "") {
   const page = document.createElement("section");
-  page.className = `page ${lang === "ar" ? "arabic" : "english"}`;
+  page.className = `page ${lang === "ar" ? "arabic" : "english"} ${extraClass}`.trim();
   page.setAttribute("lang", lang);
   page.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+  return page;
+}
 
-  const title = lang === "ar" ? dhikr.title_ar : dhikr.title_en;
-  const paragraphs = (lang === "ar" ? dhikr.ar : dhikr.en).map(p => `<p>${p}</p>`).join("");
-  const repeat = repeatLabel(dhikr.repeat);
-  const positionLabel = lang === "ar" ? `الذكر ${position} من ${total}` : `Dhikr ${position} of ${total}`;
-
-  page.innerHTML = `
+function cardHtml(positionLabel, lang, body, foot = "") {
+  return `
     <article class="card">
       <div class="meta">
         <span>${positionLabel}</span>
         <span class="lang">${lang === "ar" ? "عربي" : "English"}</span>
       </div>
       <div class="body">
-        <div class="text">
-          ${title ? `<h2 class="title">${title}</h2>` : ""}
-          ${paragraphs}
-        </div>
+        <div class="text">${body}</div>
       </div>
-      ${repeat ? `<div class="foot"><span class="repeat">${repeat}</span></div>` : ""}
+      ${foot ? `<div class="foot">${foot}</div>` : ""}
     </article>`;
+}
+
+function buildDhikrPage(dhikr, position, total, lang) {
+  const page = createPage(lang);
+  const title = lang === "ar" ? dhikr.title_ar : dhikr.title_en;
+  const paragraphs = (lang === "ar" ? dhikr.ar : dhikr.en).map(p => `<p>${p}</p>`).join("");
+  const repeat = repeatLabel(dhikr.repeat);
+  const positionLabel = lang === "ar" ? `الذكر ${position} من ${total}` : `Dhikr ${position} of ${total}`;
+  page.innerHTML = cardHtml(
+    positionLabel,
+    lang,
+    `${title ? `<h2 class="title">${title}</h2>` : ""}${paragraphs}`,
+    repeat ? `<span class="repeat">${repeat}</span>` : ""
+  );
+  return page;
+}
+
+function buildVersePage(verses, position, total, lang) {
+  const page = createPage(lang, "quran");
+  const first = verses[0].n;
+  const last = verses[verses.length - 1].n;
+  const positionLabel = lang === "ar" ? `الآيات ${first}–${last}` : `Verses ${first}–${last}`;
+  const isOpening = first === 1;
+
+  let body;
+  if (lang === "ar") {
+    const text = verses
+      .map(verse => `${verse.ar} <span class="ayah-end">&#x06DD;${toArabicDigits(verse.n)}</span>`)
+      .join(" ");
+    body = `${isOpening ? `<h2 class="basmalah">${KAHF.basmalah_ar}</h2>` : ""}<p>${text}</p>`;
+  } else {
+    const text = verses.map(verse => `<p><span class="verse-num">${verse.n}</span>${verse.en}</p>`).join("");
+    body = `${isOpening ? `<h2 class="basmalah">${KAHF.basmalah_en}</h2>` : ""}${text}`;
+  }
+
+  const credit = isOpening
+    ? `<span class="credit">${lang === "ar"
+        ? 'النص: مشروع <a href="https://tanzil.net" target="_blank" rel="noopener">تنزيل</a>'
+        : 'Arabic text: <a href="https://tanzil.net" target="_blank" rel="noopener">Tanzil Project</a>. Translation: M. M. Pickthall, 1930.'}</span>`
+    : "";
+  page.innerHTML = cardHtml(positionLabel, lang, body, credit);
   return page;
 }
 
 function render(list) {
   currentList = list;
-  const { ar, en, items } = LISTS[list];
+  const { ar, en, items, build } = LISTS[list];
   listToggle.querySelector(".ar").textContent = ar;
   listToggle.querySelector(".en").textContent = en;
 
   if (observer) { observer.disconnect(); }
   track.innerHTML = "";
   pages = [];
-  items.forEach((dhikr, i) => {
-    pages.push(buildPage(dhikr, i + 1, items.length, "ar"));
-    pages.push(buildPage(dhikr, i + 1, items.length, "en"));
+  items.forEach((item, i) => {
+    pages.push(build(item, i + 1, items.length, "ar"));
+    pages.push(build(item, i + 1, items.length, "en"));
   });
   pages.forEach(p => track.appendChild(p));
 
@@ -538,6 +648,23 @@ function render(list) {
     });
   }, { root: track, threshold: 0.6 });
   pages.forEach(p => observer.observe(p));
+}
+
+function showSection(section) {
+  currentSection = section;
+  writeStorage(SECTION_KEY, section);
+  sectionButtons.forEach(button => {
+    button.setAttribute("aria-pressed", String(button.dataset.section === section));
+  });
+
+  const isAdhkar = section === "adhkar";
+  listToggle.disabled = !isAdhkar;
+  listToggle.title = isAdhkar ? "Switch between morning and evening" : "";
+  if (isAdhkar) {
+    render(manualOverride ? currentAdhkarChoice : listForNow());
+  } else {
+    render("kahf");
+  }
 }
 
 function goTo(index, behavior = "smooth") {
@@ -563,16 +690,27 @@ document.addEventListener("keydown", event => {
 });
 
 listToggle.addEventListener("click", () => {
+  if (currentSection !== "adhkar") { return; }
   manualOverride = true;
-  render(currentList === "morning" ? "evening" : "morning");
+  currentAdhkarChoice = currentList === "morning" ? "evening" : "morning";
+  render(currentAdhkarChoice);
+});
+
+sectionButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    if (button.dataset.section !== currentSection) {
+      showSection(button.dataset.section);
+    }
+  });
 });
 
 /* Keep the snapped page aligned after rotation or window resize. */
 window.addEventListener("resize", () => goTo(currentIndex, "instant"));
 
-/* If the app is reopened past midday (or before), follow the time of day unless the user chose a list. */
+/* In the adhkār section, follow the time of day on reopen unless the user chose a list. */
 document.addEventListener("visibilitychange", () => {
-  if (document.visibilityState === "visible" && !manualOverride && listForNow() !== currentList) {
+  if (document.visibilityState === "visible" && currentSection === "adhkar"
+      && !manualOverride && listForNow() !== currentList) {
     render(listForNow());
   }
 });
@@ -635,7 +773,7 @@ if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
 }
 
 applyTheme();
-render(listForNow());
+showSection(savedSection());
 livePageVersion().then(version => { loadedPageVersion = version; });
 </script>
 </body>
