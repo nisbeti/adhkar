@@ -17,6 +17,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 <style>
+  @font-face {
+    font-family: "IndoPak Nastaleeq";
+    src: url("https://verses.quran.foundation/fonts/quran/hafs/nastaleeq/indopak/indopak-nastaleeq-waqf-lazim-v4.2.1.woff2") format("woff2"),
+         url("https://verses.quran.foundation/fonts/quran/hafs/nastaleeq/indopak/indopak-nastaleeq-waqf-lazim-v4.2.1.woff") format("woff");
+    font-display: swap;
+  }
   :root {
     --bg: #f6f1e7;
     --card: #fffdf8;
@@ -213,6 +219,35 @@
   }
   .credit { color: var(--muted); font-size: .85rem; line-height: 1.5; }
   .credit a { color: inherit; }
+
+  /* Arabic font choice: Amiri (default) or IndoPak Nastaleeq. */
+  .when-indopak { display: none; }
+  :root[data-font="indopak"] .when-amiri { display: none; }
+  :root[data-font="indopak"] .when-indopak { display: revert; }
+  :root[data-font="indopak"] .page.arabic .text {
+    font-family: "IndoPak Nastaleeq", "Amiri", serif;
+    font-size: clamp(1.85rem, 5.2vw, 2.6rem);
+    line-height: 2.4;
+  }
+  :root[data-font="indopak"] .page.quran.arabic .text {
+    font-family: "IndoPak Nastaleeq", "Amiri Quran", serif;
+    font-size: clamp(1.7rem, 4.8vw, 2.4rem);
+  }
+
+  .font-toggle {
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    color: var(--muted);
+    font: inherit;
+    font-size: .8rem;
+    letter-spacing: .04em;
+    line-height: 1.4;
+    padding: .1rem .65rem;
+    cursor: pointer;
+    direction: ltr;
+  }
+  .font-toggle:hover { color: var(--accent); border-color: var(--accent); }
   .card .text p { margin: 0 0 1em; }
   .card .text p:last-child { margin-bottom: 0; }
   .card .foot {
@@ -512,6 +547,7 @@ const nextBtn = document.getElementById("nextBtn");
 const themeToggle = document.getElementById("themeToggle");
 const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 const THEME_KEY = "adhkar:theme";
+const FONT_KEY = "adhkar:font";
 const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
 
 let currentSection = null;
@@ -564,11 +600,14 @@ function createPage(lang, extraClass = "") {
 }
 
 function cardHtml(positionLabel, lang, body, foot = "") {
+  const corner = lang === "ar"
+    ? `<button type="button" class="font-toggle" aria-label="Switch Arabic font"><span class="when-amiri">Amiri</span><span class="when-indopak">IndoPak</span></button>`
+    : `<span class="lang">English</span>`;
   return `
     <article class="card">
       <div class="meta">
         <span>${positionLabel}</span>
-        <span class="lang">${lang === "ar" ? "عربي" : "English"}</span>
+        ${corner}
       </div>
       <div class="body">
         <div class="text">${body}</div>
@@ -601,19 +640,24 @@ function buildVersePage(verses, position, total, lang) {
 
   let body;
   if (lang === "ar") {
-    const text = verses
+    const uthmani = verses
       .map(verse => `${verse.ar} <span class="ayah-end">&#x06DD;${toArabicDigits(verse.n)}</span>`)
       .join(" ");
-    body = `${isOpening ? `<h2 class="basmalah">${KAHF.basmalah_ar}</h2>` : ""}<p>${text}</p>`;
+    /* The IndoPak text carries its own numbered verse icons, drawn by the IndoPak font. */
+    const indopak = verses.map(verse => verse.ar_indopak).join(" ");
+    body = `
+      <div class="when-amiri">${isOpening ? `<h2 class="basmalah">${KAHF.basmalah_ar}</h2>` : ""}<p>${uthmani}</p></div>
+      <div class="when-indopak">${isOpening ? `<h2 class="basmalah">${KAHF.basmalah_ar_indopak}</h2>` : ""}<p>${indopak}</p></div>`;
   } else {
     const text = verses.map(verse => `<p><span class="verse-num">${verse.n}</span>${verse.en}</p>`).join("");
     body = `${isOpening ? `<h2 class="basmalah">${KAHF.basmalah_en}</h2>` : ""}${text}`;
   }
 
+  const indopakCredit = 'IndoPak text and font: Ayman Siddiqui and R. Siddiqua, <a href="https://quranwbw.com" target="_blank" rel="noopener">QuranWBW.com</a> and <a href="https://quran.com" target="_blank" rel="noopener">Quran.com</a>.';
   const credit = isOpening
     ? `<span class="credit">${lang === "ar"
-        ? 'النص: مشروع <a href="https://tanzil.net" target="_blank" rel="noopener">تنزيل</a>'
-        : 'Arabic text: <a href="https://tanzil.net" target="_blank" rel="noopener">Tanzil Project</a>. Translation: M. M. Pickthall, 1930.'}</span>`
+        ? `<span class="when-amiri">النص: مشروع <a href="https://tanzil.net" target="_blank" rel="noopener">تنزيل</a></span><span class="when-indopak" dir="ltr">${indopakCredit}</span>`
+        : `<span class="when-amiri">Arabic text: <a href="https://tanzil.net" target="_blank" rel="noopener">Tanzil Project</a>.</span><span class="when-indopak">${indopakCredit}</span> Translation: M. M. Pickthall, 1930.`}</span>`
     : "";
   page.innerHTML = cardHtml(positionLabel, lang, body, credit);
   return page;
@@ -747,6 +791,21 @@ themeToggle.addEventListener("click", () => {
 
 systemDark.addEventListener("change", applyTheme);
 
+/* ---------- Arabic font ---------- */
+function applyFont() {
+  if (readStorage(FONT_KEY) === "indopak") {
+    document.documentElement.setAttribute("data-font", "indopak");
+  } else {
+    document.documentElement.removeAttribute("data-font");
+  }
+}
+
+track.addEventListener("click", event => {
+  if (!event.target.closest(".font-toggle")) { return; }
+  writeStorage(FONT_KEY, readStorage(FONT_KEY) === "indopak" ? "amiri" : "indopak");
+  applyFont();
+});
+
 /* ---------- Updates ---------- */
 /* Home-screen apps on iOS often resume an old copy of the page, so check for a newer deploy on resume. */
 let loadedPageVersion = null;
@@ -773,6 +832,7 @@ if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
 }
 
 applyTheme();
+applyFont();
 showSection(savedSection());
 livePageVersion().then(version => { loadedPageVersion = version; });
 </script>
