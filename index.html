@@ -293,6 +293,56 @@
   }
   .size-btn { font-size: 1.3rem; }
   .size-btn:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
+  #aboutBtn { font-size: 1.05rem; font-style: italic; font-weight: 700; margin-inline-end: .25rem; }
+
+  #about {
+    width: min(34rem, calc(100% - 2rem));
+    max-height: 85dvh;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    background: var(--card);
+    color: var(--ink);
+    box-shadow: var(--shadow);
+    direction: ltr;
+    text-align: left;
+  }
+  #about::backdrop { background: rgba(20, 15, 5, .55); }
+  #about .about-inner { padding: 1.25rem 1.5rem 1.5rem; overflow-y: auto; max-height: 85dvh; }
+  #about header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+    margin-bottom: .5rem;
+  }
+  #about h2 { margin: 0; font-size: 1.4rem; }
+  #about h3 { margin: 1.25rem 0 .4rem; font-size: 1.05rem; color: var(--accent); }
+  #about p, #about li { font-size: 1rem; line-height: 1.55; margin: 0 0 .5rem; }
+  #about ul { margin: 0; padding-left: 1.2rem; }
+  #about a { color: var(--accent); }
+  #about .video-link {
+    display: inline-block;
+    margin-top: .25rem;
+    padding: .45rem 1rem;
+    border-radius: 999px;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+  }
+  #aboutClose {
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: none;
+    color: var(--muted);
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+  #aboutClose:hover { color: var(--accent); border-color: var(--accent); }
   .size-btn:disabled { opacity: .35; cursor: default; }
   #progress {
     height: 4px;
@@ -353,10 +403,41 @@
 <main id="track" aria-label="Pages"></main>
 
 <footer>
+  <button class="size-btn" id="aboutBtn" type="button" aria-label="About and credits" aria-haspopup="dialog">i</button>
   <button class="size-btn" id="smallerText" type="button" aria-label="Smaller text">−</button>
   <div id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div></div></div>
   <button class="size-btn" id="largerText" type="button" aria-label="Larger text">+</button>
 </footer>
+
+<dialog id="about" aria-labelledby="aboutTitle" lang="en">
+  <div class="about-inner">
+    <header>
+      <h2 id="aboutTitle">About</h2>
+      <button id="aboutClose" type="button" aria-label="Close">×</button>
+    </header>
+    <p>The morning and evening adhkār, and Sūrat al-Kahf, one page at a time: Arabic first, then English.</p>
+    <a class="video-link" href="https://youtube.com/shorts/lQREmcWLv6E" target="_blank" rel="noopener">Watch the how-to video</a>
+
+    <h3>How to use</h3>
+    <ul>
+      <li>Swipe to move between pages. On a computer, use the side buttons or the arrow keys.</li>
+      <li>Before midday the morning adhkār open, and after midday the evening adhkār. Tap the title to switch.</li>
+      <li>Use the menu at the top to switch between the adhkār and Sūrat al-Kahf.</li>
+      <li>Tap the font name on an Arabic page to switch between Amiri and IndoPak.</li>
+      <li>Use − and + to change the text size.</li>
+      <li>Your place, font, text size and theme are remembered on this device.</li>
+    </ul>
+
+    <h3>Credits</h3>
+    <ul>
+      <li>Adhkār and their English translations: the Morning &amp; Evening Adhkār leaflet and the Daily Adhkār booklet by UWT.</li>
+      <li>Sūrat al-Kahf Arabic text: <a href="https://tanzil.net" target="_blank" rel="noopener">Tanzil Project</a>.</li>
+      <li>IndoPak text and font: Ayman Siddiqui and R. Siddiqua, <a href="https://quranwbw.com" target="_blank" rel="noopener">QuranWBW.com</a> and <a href="https://quran.com" target="_blank" rel="noopener">Quran.com</a>. Font served by the <a href="https://quran.foundation" target="_blank" rel="noopener">Quran Foundation</a>.</li>
+      <li>Sūrat al-Kahf English translation: Marmaduke Pickthall, 1930.</li>
+      <li>Amiri and Amiri Quran fonts: Khaled Hosny, under the SIL Open Font License, via Google Fonts.</li>
+    </ul>
+  </div>
+</dialog>
 
 <button class="nav" id="prevBtn" type="button" aria-label="Previous page">&#x276F;</button>
 <button class="nav" id="nextBtn" type="button" aria-label="Next page">&#x276E;</button>
@@ -570,6 +651,7 @@ const sectionButtons = [...document.querySelectorAll("#sectionMenu button")];
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
 const themeToggle = document.getElementById("themeToggle");
+const about = document.getElementById("about");
 const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 const THEME_KEY = "adhkar:theme";
 const FONT_KEY = "adhkar:font";
@@ -756,6 +838,7 @@ nextBtn.addEventListener("click", () => goTo(currentIndex + 1));
 prevBtn.addEventListener("click", () => goTo(currentIndex - 1));
 
 document.addEventListener("keydown", event => {
+  if (about.open) { return; }
   if (event.key === "ArrowLeft") { goTo(currentIndex + 1); }
   if (event.key === "ArrowRight") { goTo(currentIndex - 1); }
 });
@@ -831,6 +914,13 @@ track.addEventListener("click", event => {
   if (!event.target.closest(".font-toggle")) { return; }
   writeStorage(FONT_KEY, readStorage(FONT_KEY) === "indopak" ? "amiri" : "indopak");
   applyFont();
+});
+
+/* ---------- About ---------- */
+document.getElementById("aboutBtn").addEventListener("click", () => about.showModal());
+document.getElementById("aboutClose").addEventListener("click", () => about.close());
+about.addEventListener("click", event => {
+  if (event.target === about) { about.close(); }
 });
 
 /* ---------- Text size ---------- */
