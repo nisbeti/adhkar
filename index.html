@@ -577,7 +577,12 @@ function buildDhikrPage(dhikr, position, total, lang) {
   const page = createPage(lang);
   const rawTitle = lang === "ar" ? dhikr.title_ar : dhikr.title_en;
   const title = rawTitle ? markJalalah(rawTitle, lang) : "";
-  const paragraphs = (lang === "ar" ? dhikr.ar : dhikr.en).map(p => `<p>${markJalalah(p, lang)}</p>`).join("");
+  /* Number each verse-end mark (۝) in Qur'anic passages, as on the Kahf pages. */
+  let ayah = 0;
+  const numberAyat = html => html.replace(/\s*۝/g, () => ` <span class="ayah-end">&#x06DD;${toArabicDigits(++ayah)}</span>`);
+  const paragraphs = (lang === "ar" ? dhikr.ar : dhikr.en)
+    .map(p => `<p>${lang === "ar" ? numberAyat(markJalalah(p, lang)) : markJalalah(p, lang)}</p>`)
+    .join("");
   const repeat = repeatLabel(dhikr.repeat);
   const positionLabel = lang === "ar" ? `الذكر ${position} من ${total}` : `Dhikr ${position} of ${total}`;
   page.innerHTML = cardHtml(
