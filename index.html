@@ -291,8 +291,7 @@
     align-items: center;
     justify-content: center;
   }
-  #smallerText { font-size: .85rem; }
-  #largerText { font-size: 1.15rem; }
+  .size-btn { font-size: 1.3rem; }
   .size-btn:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
   .size-btn:disabled { opacity: .35; cursor: default; }
   #progress {
@@ -354,9 +353,9 @@
 <main id="track" aria-label="Pages"></main>
 
 <footer>
-  <button class="size-btn" id="smallerText" type="button" aria-label="Smaller text">A−</button>
+  <button class="size-btn" id="smallerText" type="button" aria-label="Smaller text">−</button>
   <div id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div></div></div>
-  <button class="size-btn" id="largerText" type="button" aria-label="Larger text">A+</button>
+  <button class="size-btn" id="largerText" type="button" aria-label="Larger text">+</button>
 </footer>
 
 <button class="nav" id="prevBtn" type="button" aria-label="Previous page">&#x276F;</button>
