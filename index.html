@@ -188,12 +188,12 @@
   .card .text { width: 100%; margin: 0; }
   .card .title { color: var(--accent); margin: 0 0 .75rem; font-size: 1.15rem; font-weight: 700; }
   .page.arabic .text {
-    font-size: clamp(1.7rem, 4.8vw, 2.4rem);
+    font-size: calc(clamp(1.7rem, 4.8vw, 2.4rem) * var(--text-scale, 1));
     line-height: 2.1;
     text-align: right;
   }
   .page.english .text {
-    font-size: clamp(1.2rem, 3.2vw, 1.55rem);
+    font-size: calc(clamp(1.2rem, 3.2vw, 1.55rem) * var(--text-scale, 1));
     line-height: 1.65;
     text-align: left;
     font-style: italic;
@@ -201,12 +201,12 @@
   .page.english .card { direction: ltr; }
   .page.quran.arabic .text {
     font-family: "Amiri Quran", "Amiri", serif;
-    font-size: clamp(1.55rem, 4.4vw, 2.2rem);
+    font-size: calc(clamp(1.55rem, 4.4vw, 2.2rem) * var(--text-scale, 1));
     line-height: 2.3;
     text-align: justify;
     text-align-last: right;
   }
-  .page.quran.english .text { font-style: normal; font-size: clamp(1.1rem, 3vw, 1.4rem); }
+  .page.quran.english .text { font-style: normal; font-size: calc(clamp(1.1rem, 3vw, 1.4rem) * var(--text-scale, 1)); }
   .page.quran .basmalah { text-align: center; color: var(--accent); margin: 0 0 1rem; font-weight: 400; font-size: 1.1em; }
   .page.quran.english .basmalah { font-style: italic; font-size: 1em; }
   .ayah-end { color: var(--accent); white-space: nowrap; }
@@ -226,12 +226,12 @@
   :root[data-font="indopak"] .when-indopak { display: revert; }
   :root[data-font="indopak"] .page.arabic .text {
     font-family: "IndoPak Nastaleeq", "Amiri", serif;
-    font-size: clamp(1.85rem, 5.2vw, 2.6rem);
+    font-size: calc(clamp(1.85rem, 5.2vw, 2.6rem) * var(--text-scale, 1));
     line-height: 2.4;
   }
   :root[data-font="indopak"] .page.quran.arabic .text {
     font-family: "IndoPak Nastaleeq", "Amiri Quran", serif;
-    font-size: clamp(1.7rem, 4.8vw, 2.4rem);
+    font-size: calc(clamp(1.7rem, 4.8vw, 2.4rem) * var(--text-scale, 1));
   }
 
   .font-toggle {
@@ -269,8 +269,32 @@
 
   footer {
     flex: 0 0 auto;
-    padding: 0 1.25rem calc(.75rem + env(safe-area-inset-bottom));
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    direction: ltr;
+    padding: 0 1.25rem calc(.5rem + env(safe-area-inset-bottom));
   }
+  #progress { flex: 1 1 auto; }
+  .size-btn {
+    flex: 0 0 auto;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--muted);
+    font-family: inherit;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #smallerText { font-size: .85rem; }
+  #largerText { font-size: 1.15rem; }
+  .size-btn:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
+  .size-btn:disabled { opacity: .35; cursor: default; }
   #progress {
     height: 4px;
     background: var(--line);
@@ -330,7 +354,9 @@
 <main id="track" aria-label="Pages"></main>
 
 <footer>
+  <button class="size-btn" id="smallerText" type="button" aria-label="Smaller text">A−</button>
   <div id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div></div></div>
+  <button class="size-btn" id="largerText" type="button" aria-label="Larger text">A+</button>
 </footer>
 
 <button class="nav" id="prevBtn" type="button" aria-label="Previous page">&#x276F;</button>
@@ -548,6 +574,8 @@ const themeToggle = document.getElementById("themeToggle");
 const themeColorMeta = document.querySelector('meta[name="theme-color"]');
 const THEME_KEY = "adhkar:theme";
 const FONT_KEY = "adhkar:font";
+const TEXT_SCALE_KEY = "adhkar:textScale";
+const TEXT_SCALES = [0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.35, 1.5, 1.7];
 const systemDark = window.matchMedia("(prefers-color-scheme: dark)");
 
 let currentSection = null;
@@ -806,6 +834,31 @@ track.addEventListener("click", event => {
   applyFont();
 });
 
+/* ---------- Text size ---------- */
+const smallerText = document.getElementById("smallerText");
+const largerText = document.getElementById("largerText");
+
+function textScaleStep() {
+  const step = TEXT_SCALES.indexOf(parseFloat(readStorage(TEXT_SCALE_KEY)));
+  return step === -1 ? TEXT_SCALES.indexOf(1) : step;
+}
+
+function applyTextScale() {
+  const step = textScaleStep();
+  document.documentElement.style.setProperty("--text-scale", String(TEXT_SCALES[step]));
+  smallerText.disabled = step === 0;
+  largerText.disabled = step === TEXT_SCALES.length - 1;
+}
+
+function changeTextScale(direction) {
+  const step = Math.max(0, Math.min(TEXT_SCALES.length - 1, textScaleStep() + direction));
+  writeStorage(TEXT_SCALE_KEY, String(TEXT_SCALES[step]));
+  applyTextScale();
+}
+
+smallerText.addEventListener("click", () => changeTextScale(-1));
+largerText.addEventListener("click", () => changeTextScale(1));
+
 /* ---------- Updates ---------- */
 /* Home-screen apps on iOS often resume an old copy of the page, so check for a newer deploy on resume. */
 let loadedPageVersion = null;
@@ -833,6 +886,7 @@ if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
 
 applyTheme();
 applyFont();
+applyTextScale();
 showSection(savedSection());
 livePageVersion().then(version => { loadedPageVersion = version; });
 </script>
