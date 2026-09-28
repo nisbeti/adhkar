@@ -546,7 +546,7 @@ function goTo(index, behavior = "smooth") {
 }
 
 function updateUi() {
-  counter.textContent = `${currentIndex + 1} / ${pages.length}`;
+  counter.textContent = `${Math.floor(currentIndex / 2) + 1} / ${pages.length / 2}`;
   const percent = ((currentIndex + 1) / pages.length) * 100;
   progressBar.style.width = `${percent}%`;
   progress.setAttribute("aria-valuenow", String(Math.round(percent)));
