@@ -64,7 +64,7 @@ const DHIKR = [
   },
   {
     n: 7, when: "both", source: "Nasā’ī", repeat: 1,
-    video: { morning: "14:36" },
+    video: { morning: "14:36", evening: "11:48" },
     ar: ["يَا حَيُّ يَا قَيُّوْمُ، بِرَحْمَتِكَ أَسْتَغِيْثُ، أَصْلِحْ لِيْ شَأْنِيْ كُلَّهُ، وَلَا تَكِلْنِيْ إِلَىٰ نَفْسِيْ طَرْفَةَ عَيْنٍ."],
     en: ["O the Ever Living, the One Who sustains and protects all that exists; I seek assistance through Your mercy. Rectify all of my affairs and do not entrust me to myself for the blink of an eye."]
   },
