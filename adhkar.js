@@ -195,6 +195,7 @@ const DHIKR = [
   },
   {
     n: 23, when: "morning", source: "Tabarānī", repeat: 100,
+    video: { morning: "17:02" },
     ar: ["أَسْتَغْفِرُ اللهَ وَأَتُوْبُ إِلَيْهِ."],
     en: ["I seek Allah’s forgiveness and turn to Him in repentance."]
   },
