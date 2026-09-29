@@ -143,6 +143,7 @@ const DHIKR = [
 
   {
     n: 15, when: "both", source: "Ahmad", repeat: 3,
+    video: { morning: "9:09" },
     ar: ["اللَّهُمَّ عَافِنِيْ فِيْ بَدَنِيْ، اللَّهُمَّ عَافِنِيْ فِيْ سَمْعِيْ، اللَّهُمَّ عَافِنِيْ فِيْ بَصَرِيْ، لَا إِلَٰهَ إِلَّا أَنْتَ، اللَّهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، وَأَعُوْذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لَا إِلَٰهَ إِلَّا أَنْتَ."],
     en: ["O Allah, grant me well-being in my body. O Allah, grant me well-being in my hearing. O Allah, grant me well-being in my sight. There is no god but You. O Allah, I seek Your protection from disbelief and poverty and I seek Your protection from the punishment of the grave. There is no god but You."]
   },
