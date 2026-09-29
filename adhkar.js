@@ -68,6 +68,7 @@ const DHIKR = [
 
   {
     n: 8, when: "morning", source: "Abū Dāwūd", repeat: 1,
+    video: { morning: "8:52" },
     ar: ["اللَّهُمَّ مَا أَصْبَحَ بِيْ مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ، فَمِنْكَ وَحْدَكَ لَا شَرِيْكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ."],
     en: ["O Allah, all the favours that I or anyone from Your creation has received in the morning, are from You Alone. You have no partner. To You Alone belong all praise and all thanks."]
   },
