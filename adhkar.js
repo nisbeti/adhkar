@@ -157,6 +157,7 @@ const DHIKR = [
   },
   {
     n: 17, when: "both", source: "Tirmidhī", repeat: 3,
+    video: { morning: "13:59" },
     ar: ["رَضِيْتُ بِاللهِ رَبًّا، وَبِالْإِسْلَامِ دِيْنًا، وَبِمُحَمَّدٍ ﷺ نَبِيًّا."],
     en: ["I am pleased with Allah as my Lord, with Islām as my religion and with Muhammad ﷺ as my Prophet."]
   },
