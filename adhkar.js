@@ -200,6 +200,7 @@ const DHIKR = [
   },
   {
     n: 24, when: "morning", source: "Muslim", repeat: 3,
+    video: { morning: "16:12" },
     ar: ["سُبْحَانَ اللهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ."],
     en: ["Allah is free from imperfection and all praise is due to Him, (in ways) as numerous as all He has created, (as vast) as His pleasure, (as limitless) as the weight of His Throne, and (as endless) as the ink of His words."]
   },
