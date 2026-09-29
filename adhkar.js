@@ -19,7 +19,7 @@ const DHIKR = [
   },
   {
     n: 2, when: "both", source: "Tirmidhī", repeat: 3,
-    video: { morning: "1:10" },
+    video: { morning: "1:10", evening: "1:09" },
     title_ar: "سورة الإخلاص", title_en: "Sūrah al-Ikhlāṣ (112)",
     ar: ["قُلْ هُوَ اللهُ أَحَدٌ ۝ اللهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ ۝"],
     en: ["Say, He is Allah, the One, the Self-Sufficient Master, Who has not given birth and was not born, and to Whom no one is equal."]
