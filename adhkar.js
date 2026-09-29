@@ -33,6 +33,7 @@ const DHIKR = [
   },
   {
     n: 2, when: "both", source: "Tirmidhī", repeat: 3,
+    video: { morning: "3:30" },
     title_ar: "سورة الناس", title_en: "Sūrah al-Nās (114)",
     ar: ["قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ ۝"],
     en: ["Say, I seek protection of the Lord of mankind, the King of mankind, the God of mankind, from the evil of the whisperer who withdraws, who whispers in the hearts of mankind, whether they be Jinn or people."]
