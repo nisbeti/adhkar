@@ -162,6 +162,7 @@ const DHIKR = [
   },
   {
     n: 18, when: "both", source: "Tirmidhī", repeat: 3,
+    video: { morning: "13:20" },
     ar: ["بِسْمِ اللهِ الَّذِيْ لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ، وَهُوَ السَّمِيْعُ الْعَلِيْمُ."],
     en: ["In the Name of Allah, with whose Name nothing can harm in the earth nor in the sky. He is the All-Hearing and All-Knowing."]
   },
