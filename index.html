@@ -260,6 +260,13 @@
     border-top: 1px solid var(--line);
     font-size: 1rem;
   }
+  .listen {
+    margin-inline-end: auto;
+    color: var(--accent);
+    text-decoration: none;
+    font-variant-numeric: tabular-nums;
+  }
+  .listen:hover { text-decoration: underline; }
   .repeat {
     background: var(--accent);
     color: #fff;
@@ -573,6 +580,19 @@ function cardHtml(positionLabel, lang, body, foot = "") {
     </article>`;
 }
 
+/* "1:23" or "1:02:03" → seconds */
+function toSeconds(time) {
+  return String(time).split(":").reduce((total, part) => total * 60 + Number(part), 0);
+}
+
+function listenLink(dhikr, lang) {
+  const time = dhikr.video && dhikr.video[currentList];
+  const id = typeof VIDEOS !== "undefined" && VIDEOS[currentList];
+  if (!time || !id) { return ""; }
+  const label = lang === "ar" ? `▶ استمع من ${toArabicDigits(time)}` : `▶ Listen from ${time}`;
+  return `<a class="listen" href="https://www.youtube.com/watch?v=${id}&t=${toSeconds(time)}s" target="_blank" rel="noopener">${label}</a>`;
+}
+
 function buildDhikrPage(dhikr, position, total, lang) {
   const page = createPage(lang);
   const rawTitle = lang === "ar" ? dhikr.title_ar : dhikr.title_en;
@@ -589,7 +609,7 @@ function buildDhikrPage(dhikr, position, total, lang) {
     positionLabel,
     lang,
     `${title ? `<h2 class="title">${title}</h2>` : ""}${paragraphs}`,
-    repeat ? `<span class="repeat">${repeat}</span>` : ""
+    listenLink(dhikr, lang) + (repeat ? `<span class="repeat">${repeat}</span>` : "")
   );
   return page;
 }

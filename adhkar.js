@@ -2,6 +2,12 @@
  * Morning and evening adhkār, pages 4–7 of the Morning & Evening Adhkār leaflet by UWT.
  * English translations from UWT's Daily Adhkār booklet.
  */
+/* Recitations by Mpowa on YouTube. A dhikr's `video` gives its start time in each, e.g. video: { morning: "1:23", evening: "1:40" }. */
+const VIDEOS = {
+  morning: "2_Ke90xqABU", /* Morning adhkaar/duas/prayers/durood */
+  evening: "yY91Pq70Mk4"  /* Evening adhkaar/remembrance/prayers/duas/durood */
+};
+
 /* when: "both" | "morning" | "evening".  A dhikr numbered 8–14 has a morning and an evening wording. */
 const DHIKR = [
   {
