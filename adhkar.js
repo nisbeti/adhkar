@@ -82,6 +82,7 @@ const DHIKR = [
   },
   {
     n: 9, when: "morning", source: "Nasā’ī", repeat: 1,
+    video: { morning: "15:20" },
     ar: ["أَصْبَحْنَا عَلَىٰ فِطْرَةِ الْإِسْلَامِ، وَعَلَىٰ كَلِمَةِ الْإِخْلَاصِ، وَعَلَىٰ دِيْنِ نَبِيِّنَا مُحَمَّدٍ ﷺ، وَعَلَىٰ مِلَّةِ أَبِيْنَا إِبْرَاهِيْمَ حَنِيْفًا مُسْلِمًا وَمَا كَانَ مِنَ الْمُشْرِكِيْنَ."],
     en: ["We have entered the morning upon the natural religion of Islam, the word of pure faith (i.e. Shahādah), the religion of our Prophet Muhammad ﷺ and upon the way of our father Ibrāhīm, who turned away from all that is false, having surrendered to Allah, and he was not of the polytheists."]
   },
