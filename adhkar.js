@@ -119,6 +119,7 @@ const DHIKR = [
   },
   {
     n: 13, when: "morning", source: "Abū Dāwūd", repeat: 4,
+    video: { morning: "7:02" },
     ar: ["اللَّهُمَّ إِنِّيْ أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيْعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللهُ، لَا إِلَٰهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيْكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُوْلُكَ."],
     en: ["O Allah, I have entered the morning and call upon You, the bearers of Your Throne, Your angels and all creation, to bear witness that surely You are Allah. There is no god but You Alone. You have no partners, and that Muhammad ﷺ is Your slave and Your Messenger."]
   },
