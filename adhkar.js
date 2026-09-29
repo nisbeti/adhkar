@@ -156,7 +156,7 @@ const DHIKR = [
   },
   {
     n: 16, when: "both", source: "Abū Dāwūd", repeat: 7,
-    video: { morning: "10:45" },
+    video: { morning: "10:45", evening: "7:58" },
     ar: ["حَسْبِيَ اللهُ لَا إِلَٰهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيْمِ."],
     en: ["Allah is sufficient for me. There is no god but Him. I have placed my trust in Him only and He is the Lord of the Magnificent Throne."]
   },
