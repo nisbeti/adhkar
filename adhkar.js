@@ -87,7 +87,6 @@ const DHIKR = [
   },
   {
     n: 10, when: "morning", source: "Nasā’ī", repeat: 3,
-    video: { morning: "5:20" },
     ar: ["أَصْبَحْتُ أُثْنِيْ عَلَيْكَ حَمْدًا، وَأَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللهُ."],
     en: ["I have entered the morning praising You, and I bear witness that there is no god but Allah."]
   },
