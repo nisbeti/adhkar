@@ -58,7 +58,7 @@ const DHIKR = [
   },
   {
     n: 6, when: "both", source: "Tirmidhī", repeat: 1,
-    video: { morning: "12:45" },
+    video: { morning: "12:45", evening: "9:58" },
     ar: ["اللَّهُمَّ عَالِمَ الْغَيْبِ وَالشَّهَادَةِ، فَاطِرَ السَّمَاوَاتِ وَالْأَرْضِ، رَبَّ كُلِّ شَيْءٍ وَمَلِيْكَهُ، أَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا أَنْتَ، أَعُوْذُ بِكَ مِنْ شَرِّ نَفْسِيْ، وَمِنْ شَرِّ الشَّيْطَانِ وَشِرْكِهِ، وَأَنْ أَقْتَرِفَ عَلَىٰ نَفْسِيْ سُوْءًا، أَوْ أَجُرَّهُ إِلَىٰ مُسْلِمٍ."],
     en: ["O Allah, Knower of the unseen and the seen, Creator of the heavens and the earth, the Lord and Sovereign of everything; I bear witness that there is no god but You. I seek Your protection from the evil of my own self, from the evil of Shaytān and from the evil of polytheism to which he calls, and from inflicting evil on myself, or bringing it upon a Muslim."]
   },
