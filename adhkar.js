@@ -129,6 +129,7 @@ const DHIKR = [
   },
   {
     n: 14, when: "morning", source: "Tirmidhī", repeat: 1,
+    video: { morning: "6:07" },
     ar: ["اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوْتُ وَإِلَيْكَ النُّشُوْرُ."],
     en: ["O Allah, by You we have entered the morning and by You we enter upon the evening. By You, we live and we die, and to You is the resurrection."]
   },
