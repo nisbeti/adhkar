@@ -113,6 +113,7 @@ const DHIKR = [
   },
   {
     n: 12, when: "morning", source: "Abū Dāwūd", repeat: 1,
+    video: { morning: "14:52" },
     ar: ["أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلهِ رَبِّ الْعَالَمِيْنَ، اللَّهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ هَٰذَا الْيَوْمِ، فَتْحَهُ وَنَصْرَهُ وَنُوْرَهُ وَبَرَكَتَهُ وَهُدَاهُ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْهِ وَشَرِّ مَا بَعْدَهُ."],
     en: ["We have entered the morning and at this very time the whole kingdom belongs to Allah, Lord of the Worlds. O Allah, I ask You for the goodness of this day: its victory, its help, its light, and its blessings and guidance. I seek Your protection from the evil that is in it and from the evil that follows it."]
   },
