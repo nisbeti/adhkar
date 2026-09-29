@@ -26,6 +26,7 @@ const DHIKR = [
   },
   {
     n: 2, when: "both", source: "Tirmidhī", repeat: 3,
+    video: { morning: "2:05" },
     title_ar: "سورة الفلق", title_en: "Sūrah al-Falaq (113)",
     ar: ["قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ ۝"],
     en: ["Say, I seek protection of the Lord of the daybreak, from the evil of what He has created, and from the evil of the darkening night when it settles, and from the evil of the blowers in knots, and from the evil of the envier when he envies."]
