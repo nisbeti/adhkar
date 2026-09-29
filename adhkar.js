@@ -174,7 +174,7 @@ const DHIKR = [
   },
   {
     n: 19, when: "both", source: "Muslim", repeat: 100,
-    video: { morning: "15:48" },
+    video: { morning: "15:48", evening: "12:03" },
     ar: ["سُبْحَانَ اللهِ وَبِحَمْدِهِ."],
     en: ["Allah is free from imperfection, and all praise is due to Him."]
   },
