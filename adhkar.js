@@ -169,6 +169,7 @@ const DHIKR = [
   },
   {
     n: 21, when: "both", source: "Bukhārī / Nasā’ī", repeat: 100,
+    video: { morning: "5:25" },
     ar: ["لَا إِلَٰهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيْكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ."],
     en: ["There is no god but Allah. He is Alone and He has no partner whatsoever. To Him Alone belong all sovereignty and all praise. He is over all things All-Powerful."]
   },
