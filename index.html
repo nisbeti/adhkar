@@ -267,6 +267,8 @@
     font-variant-numeric: tabular-nums;
   }
   .listen:hover { text-decoration: underline; }
+  button.listen { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+  .card .foot .credit { flex: 1 1 auto; }
   .repeat {
     background: var(--accent);
     color: #fff;
@@ -649,11 +651,14 @@ function buildVersePage(verses, position, total, lang) {
         ? `<span class="when-amiri">النص: مشروع <a href="https://tanzil.net" target="_blank" rel="noopener">تنزيل</a></span><span class="when-indopak" dir="ltr">${indopakCredit}</span>`
         : `<span class="when-amiri">Arabic text: <a href="https://tanzil.net" target="_blank" rel="noopener">Tanzil Project</a>.</span><span class="when-indopak">${indopakCredit}</span> Translation: M. M. Pickthall, 1930.`}</span>`
     : "";
-  page.innerHTML = cardHtml(positionLabel, lang, body, credit);
+  const playLabel = lang === "ar" ? "▶ استمع" : "▶ Listen";
+  const play = `<button type="button" class="listen play-verses" data-from="${first}" data-to="${last}" data-lang="${lang}">${playLabel}</button>`;
+  page.innerHTML = cardHtml(positionLabel, lang, body, play + credit);
   return page;
 }
 
 function render(list) {
+  stopRecitation();
   currentList = list;
   const { ar, en, items, build } = LISTS[list];
   listToggle.querySelector(".ar").textContent = ar;
@@ -781,6 +786,53 @@ themeToggle.addEventListener("click", () => {
 });
 
 systemDark.addEventListener("change", applyTheme);
+
+/* ---------- Sūrat al-Kahf recitation ---------- */
+/* Mishary al-Afasy, one file per verse, from EveryAyah.com. Plays a page's verses in order,
+   starting with the basmalah on the first page. */
+const VERSE_AUDIO = "https://everyayah.com/data/Alafasy_128kbps/";
+const verseFile = (surah, ayah) => `${VERSE_AUDIO}${String(surah).padStart(3, "0")}${String(ayah).padStart(3, "0")}.mp3`;
+const reciter = new Audio();
+let recitation = null;  /* { button, queue } while playing */
+
+function labelPlayButton(button, playing) {
+  const ar = button.dataset.lang === "ar";
+  button.textContent = playing ? (ar ? "■ إيقاف" : "■ Stop") : (ar ? "▶ استمع" : "▶ Listen");
+}
+
+function stopRecitation() {
+  if (!recitation) { return; }
+  reciter.pause();
+  labelPlayButton(recitation.button, false);
+  recitation = null;
+}
+
+function playNextVerse() {
+  if (!recitation) { return; }
+  const next = recitation.queue.shift();
+  if (!next) { stopRecitation(); return; }
+  reciter.src = next;
+  reciter.play().catch(stopRecitation);
+}
+
+reciter.addEventListener("ended", playNextVerse);
+reciter.addEventListener("error", stopRecitation);
+
+track.addEventListener("click", event => {
+  const button = event.target.closest(".play-verses");
+  if (!button) { return; }
+  const wasPlaying = recitation && recitation.button === button;
+  stopRecitation();
+  if (wasPlaying) { return; }
+  const from = Number(button.dataset.from);
+  const to = Number(button.dataset.to);
+  const queue = [];
+  if (from === 1) { queue.push(verseFile(1, 1)); }
+  for (let ayah = from; ayah <= to; ayah++) { queue.push(verseFile(18, ayah)); }
+  recitation = { button, queue };
+  labelPlayButton(button, true);
+  playNextVerse();
+});
 
 /* ---------- Arabic font ---------- */
 function applyFont() {
