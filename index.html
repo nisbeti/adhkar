@@ -268,6 +268,7 @@
   }
   .listen:hover { text-decoration: underline; }
   button.listen { background: none; border: 0; padding: 0; font: inherit; cursor: pointer; }
+  [data-ayah] { cursor: pointer; }
   .card .foot .credit { flex: 1 1 auto; }
   .repeat {
     background: var(--accent);
@@ -623,6 +624,11 @@ function buildDhikrPage(dhikr, position, total, lang) {
   return page;
 }
 
+/* A verse number doubles as a button that recites that verse. */
+function verseAttrs(n) {
+  return `data-ayah="${n}" role="button" tabindex="0" aria-label="Play verse ${n}"`;
+}
+
 function buildVersePage(verses, position, total, lang) {
   const page = createPage(lang, "quran");
   const first = verses[0].n;
@@ -633,15 +639,18 @@ function buildVersePage(verses, position, total, lang) {
   let body;
   if (lang === "ar") {
     const uthmani = verses
-      .map(verse => `${markJalalahArabic(verse.ar)} <span class="ayah-end">&#x06DD;${toArabicDigits(verse.n)}</span>`)
+      .map(verse => `${markJalalahArabic(verse.ar)} <span class="ayah-end" ${verseAttrs(verse.n)}>&#x06DD;${toArabicDigits(verse.n)}</span>`)
       .join(" ");
     /* The IndoPak text carries its own numbered verse icons, drawn by the IndoPak font. */
-    const indopak = verses.map(verse => markJalalahArabic(verse.ar_indopak)).join(" ");
+    /* The verse-end sign is one private-use character (U+F500 + verse − 1); wrapping it keeps its look. */
+    const indopak = verses
+      .map(verse => markJalalahArabic(verse.ar_indopak).replace(/[\uF500-\uF5FF]$/, sign => `<span ${verseAttrs(verse.n)}>${sign}</span>`))
+      .join(" ");
     body = `
       <div class="when-amiri">${isOpening ? `<h2 class="basmalah">${markJalalahArabic(KAHF.basmalah_ar)}</h2>` : ""}<p>${uthmani}</p></div>
       <div class="when-indopak">${isOpening ? `<h2 class="basmalah">${markJalalahArabic(KAHF.basmalah_ar_indopak)}</h2>` : ""}<p>${indopak}</p></div>`;
   } else {
-    const text = verses.map(verse => `<p><span class="verse-num">${verse.n}</span>${markJalalahEnglish(verse.en)}</p>`).join("");
+    const text = verses.map(verse => `<p><span class="verse-num" ${verseAttrs(verse.n)}>${verse.n}</span>${markJalalahEnglish(verse.en)}</p>`).join("");
     body = `${isOpening ? `<h2 class="basmalah">${markJalalahEnglish(KAHF.basmalah_en)}</h2>` : ""}${text}`;
   }
 
@@ -803,7 +812,7 @@ function labelPlayButton(button, playing) {
 function stopRecitation() {
   if (!recitation) { return; }
   reciter.pause();
-  labelPlayButton(recitation.button, false);
+  if (recitation.button.classList.contains("play-verses")) { labelPlayButton(recitation.button, false); }
   recitation = null;
 }
 
@@ -817,6 +826,27 @@ function playNextVerse() {
 
 reciter.addEventListener("ended", playNextVerse);
 reciter.addEventListener("error", stopRecitation);
+
+function playVerse(target) {
+  const wasPlaying = recitation && recitation.button === target;
+  stopRecitation();
+  if (wasPlaying) { return; }
+  recitation = { button: target, queue: [verseFile(18, Number(target.dataset.ayah))] };
+  playNextVerse();
+}
+
+track.addEventListener("click", event => {
+  const verse = event.target.closest("[data-ayah]");
+  if (verse) { playVerse(verse); }
+});
+
+track.addEventListener("keydown", event => {
+  const verse = event.target.closest("[data-ayah]");
+  if (verse && (event.key === "Enter" || event.key === " ")) {
+    event.preventDefault();
+    playVerse(verse);
+  }
+});
 
 track.addEventListener("click", event => {
   const button = event.target.closest(".play-verses");
