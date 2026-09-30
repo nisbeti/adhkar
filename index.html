@@ -586,11 +586,12 @@ function toSeconds(time) {
 }
 
 function listenLink(dhikr, lang) {
-  /* Prefer a single-dhikr recording from HisnMuslim.com, then a timestamp in the Mpowa video. */
+  /* Prefer a single-dhikr recording (HisnMuslim.com clip or a track link), then a timestamp in the Mpowa video. */
   const clip = dhikr.audio && dhikr.audio[currentList];
   if (clip) {
     const clipLabel = lang === "ar" ? "▶ استمع" : "▶ Listen";
-    return `<a class="listen" href="http://www.hisnmuslim.com/audio/ar/${clip}.mp3" target="_blank" rel="noopener">${clipLabel}</a>`;
+    const href = String(clip).startsWith("https://") ? clip : `http://www.hisnmuslim.com/audio/ar/${clip}.mp3`;
+    return `<a class="listen" href="${href}" target="_blank" rel="noopener">${clipLabel}</a>`;
   }
   const time = dhikr.video && dhikr.video[currentList];
   const id = typeof VIDEOS !== "undefined" && VIDEOS[currentList];
