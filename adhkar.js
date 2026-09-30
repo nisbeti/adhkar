@@ -1,6 +1,7 @@
 /*
  * Morning and evening adhkār, pages 4–7 of the Morning & Evening Adhkār leaflet by UWT.
- * English translations from UWT's Daily Adhkār booklet.
+ * English translations from UWT's Daily Adhkār booklet, except Āyat al-Kursī and the three Quls, which are from
+ *   Aisha and Abdalhaqq Bewley, The Noble Qur'an, via Hadith Unlocked (https://hadithunlocked.com/quran/en-bewley).
  */
 /* Recitations by Mpowa on YouTube. A dhikr's `video` gives its start time in each, e.g. video: { morning: "1:23", evening: "1:40" }. */
 const VIDEOS = {
@@ -19,28 +20,28 @@ const DHIKR = [
     video: { morning: "0:05", evening: "0:02" },
     title_ar: "آية الكرسي", title_en: "Āyat al-Kursī (2:255)",
     ar: ["اللهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ، لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ، لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ، مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ، يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ، وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ، وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ، وَلَا يَؤُودُهُ حِفْظُهُمَا، وَهُوَ الْعَلِيُّ الْعَظِيمُ."],
-    en: ["Allah, there is no god but He, the Ever Living, the One Who sustains and protects all that exists. Neither drowsiness overtakes Him nor sleep. To Him Alone belongs whatever is in the heavens and whatever is on the earth. Who is it that can intercede with Him except with His permission? He knows what is before them and what will be after them, and they encompass not a thing of His knowledge except for what He wills. His Kursī extends over the heavens and the earth, and their preservation tires Him not. And He is the Most High, the Most Great."]
+    en: ["Allah, there is no god but Him, the Living, the Self-Sustaining. He is not subject to drowsiness or sleep. Everything in the heavens and the earth belongs to Him. Who can intercede with Him except by His permission? He knows what is before them and what is behind them but they cannot grasp any of His knowledge save what He wills. His Footstool encompasses the heavens and the earth and their preservation does not tire Him. He is the Most High, the Magnificent."]
   },
   {
     n: 2, when: "both", source: "Tirmidhī", repeat: 3,
     video: { morning: "1:10", evening: "1:09" },
     title_ar: "سورة الإخلاص", title_en: "Sūrah al-Ikhlāṣ (112)",
     ar: ["قُلْ هُوَ اللهُ أَحَدٌ ۝ اللهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ ۝"],
-    en: ["Say, He is Allah, the One, the Self-Sufficient Master, Who has not given birth and was not born, and to Whom no one is equal."]
+    en: ["Say: 'He is Allah, Absolute Oneness, Allah, the Everlasting Sustainer of all. He has not given birth and was not born. And no one is comparable to Him.'"]
   },
   {
     n: 2, when: "both", source: "Tirmidhī", repeat: 3,
     video: { morning: "2:05", evening: "2:09" },
     title_ar: "سورة الفلق", title_en: "Sūrah al-Falaq (113)",
     ar: ["قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ ۝"],
-    en: ["Say, I seek protection of the Lord of the daybreak, from the evil of what He has created, and from the evil of the darkening night when it settles, and from the evil of the blowers in knots, and from the evil of the envier when he envies."]
+    en: ["Say: 'I seek refuge with the Lord of Daybreak, from the evil of what He has created and from the evil of the darkness when it gathers and from the evil of women who blow on knots and from the evil of an envier when he envies.'"]
   },
   {
     n: 2, when: "both", source: "Tirmidhī", repeat: 3,
     video: { morning: "3:30", evening: "3:27" },
     title_ar: "سورة الناس", title_en: "Sūrah al-Nās (114)",
     ar: ["قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ ۝"],
-    en: ["Say, I seek protection of the Lord of mankind, the King of mankind, the God of mankind, from the evil of the whisperer who withdraws, who whispers in the hearts of mankind, whether they be Jinn or people."]
+    en: ["Say: 'I seek refuge with the Lord of mankind, the King of mankind, the God of mankind, from the evil of the insidious whisperer who whispers in people's breasts and comes from the jinn and from mankind.'"]
   },
   {
     n: 3, when: "both", source: "Bukhārī", repeat: 1,
