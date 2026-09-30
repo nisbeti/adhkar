@@ -9,8 +9,7 @@ const VIDEOS = {
 };
 
 /* `audio` gives the ID of a single-dhikr clip on HisnMuslim.com (http://www.hisnmuslim.com/audio/ar/<ID>.mp3),
- * e.g. audio: { morning: 79, evening: 79 }, or a full https:// link to a single-dhikr track elsewhere
- * (Mishary al-Afasy, Alif Recordings on Bandcamp). It is used in preference to the video. */
+ * e.g. audio: { morning: 79, evening: 79 }. It is used in preference to the video. */
 
 /* when: "both" | "morning" | "evening".  A dhikr numbered 8–14 has a morning and an evening wording. */
 const DHIKR = [
@@ -84,7 +83,6 @@ const DHIKR = [
   },
   {
     n: 8, when: "evening", source: "Abū Dāwūd", repeat: 1,
-    audio: { evening: "https://alifrecordings.bandcamp.com/track/allahumma-ma-amsa-bi-min-ni-matin-aw-bi-ahadin-min-khalqik" },
     ar: ["اللَّهُمَّ مَا أَمْسَىٰ بِيْ مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ، فَمِنْكَ وَحْدَكَ لَا شَرِيْكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ."],
     en: ["O Allah, all the favours that I or anyone from Your creation has received in the evening, are from You Alone. You have no partner. To You Alone belong all praise and all thanks."]
   },
@@ -97,7 +95,6 @@ const DHIKR = [
   },
   {
     n: 9, when: "evening", source: "Nasā’ī", repeat: 1,
-    audio: { evening: "https://alifrecordings.bandcamp.com/track/amsayna-ala-fitratil-islami-wa-ala-kalimatil-ikhlas" },
     ar: ["أَمْسَيْنَا عَلَىٰ فِطْرَةِ الْإِسْلَامِ، وَعَلَىٰ كَلِمَةِ الْإِخْلَاصِ، وَعَلَىٰ دِيْنِ نَبِيِّنَا مُحَمَّدٍ ﷺ، وَعَلَىٰ مِلَّةِ أَبِيْنَا إِبْرَاهِيْمَ حَنِيْفًا مُسْلِمًا وَمَا كَانَ مِنَ الْمُشْرِكِيْنَ."],
     en: ["We have entered the evening upon the natural religion of Islam, the word of pure faith (i.e. Shahādah), the religion of our Prophet Muhammad ﷺ and upon the way of our father Ibrāhīm, who turned away from all that is false, having surrendered to Allah, and he was not of the polytheists."]
   },
@@ -133,7 +130,6 @@ const DHIKR = [
   },
   {
     n: 12, when: "evening", source: "Abū Dāwūd", repeat: 1,
-    audio: { evening: "https://alifrecordings.bandcamp.com/track/amsayna-wa-amsal-mulku-lillahi-rabbil-alamin" },
     ar: ["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلهِ رَبِّ الْعَالَمِيْنَ، اللَّهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ هَٰذِهِ اللَّيْلَةِ، فَتْحَهَا وَنَصْرَهَا وَنُوْرَهَا وَبَرَكَتَهَا وَهُدَاهَا، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْهَا وَشَرِّ مَا بَعْدَهَا."],
     en: ["We have entered the evening and at this very time the whole kingdom belongs to Allah, Lord of the Worlds. O Allah, I ask You for the goodness of this night: its victory, its help, its light, and its blessings and guidance. I seek Your protection from the evil that is in it and from the evil that follows it."]
   },
@@ -146,7 +142,6 @@ const DHIKR = [
   },
   {
     n: 13, when: "evening", source: "Abū Dāwūd", repeat: 4,
-    audio: { evening: "https://alifrecordings.bandcamp.com/track/allahumma-inni-amsaitu-ush-hiduk-wa-ush-hidu-amalata-arshik" },
     ar: ["اللَّهُمَّ إِنِّيْ أَمْسَيْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيْعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللهُ، لَا إِلَٰهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيْكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُوْلُكَ."],
     en: ["O Allah, I have entered the evening and call upon You, the bearers of Your Throne, Your angels and all creation, to bear witness that surely You are Allah. There is no god but You Alone. You have no partners, and that Muhammad ﷺ is Your slave and Your Messenger."]
   },
