@@ -8,8 +8,9 @@ const VIDEOS = {
   evening: "yY91Pq70Mk4"  /* Evening adhkaar/remembrance/prayers/duas/durood */
 };
 
-/* A dhikr with no video time can instead give `audio`: the ID of a single-dhikr clip on HisnMuslim.com
- * (http://www.hisnmuslim.com/audio/ar/<ID>.mp3), e.g. audio: { evening: 79 }. */
+/* `audio` gives the ID of a single-dhikr clip on HisnMuslim.com (http://www.hisnmuslim.com/audio/ar/<ID>.mp3),
+ * e.g. audio: { morning: 79, evening: 79 }. It is used in preference to the video, and only where the clip's
+ * wording matches the text here exactly. */
 
 /* when: "both" | "morning" | "evening".  A dhikr numbered 8–14 has a morning and an evening wording. */
 const DHIKR = [
@@ -43,8 +44,8 @@ const DHIKR = [
   },
   {
     n: 3, when: "both", source: "Bukhārī", repeat: 1,
+    audio: { morning: 79, evening: 79 },
     video: { morning: "6:23" },
-    audio: { evening: 79 },
     title_ar: "سيد الاستغفار", title_en: "The master supplication for forgiveness",
     ar: ["اللَّهُمَّ أَنْتَ رَبِّيْ لَا إِلَٰهَ إِلَّا أَنْتَ، خَلَقْتَنِيْ وَأَنَا عَبْدُكَ، وَأَنَا عَلَىٰ عَهْدِكَ وَوَعْدِكَ مَا اسْتَطَعْتُ، أَعُوْذُ بِكَ مِنْ شَرِّ مَا صَنَعْتُ، أَبُوْءُ لَكَ بِنِعْمَتِكَ عَلَيَّ وَأَبُوْءُ بِذَنْبِيْ، فَاغْفِرْ لِيْ، فَإِنَّهُ لَا يَغْفِرُ الذُّنُوْبَ إِلَّا أَنْتَ."],
     en: ["O Allah, You are my Lord. There is no god except You. You have created me, and I am Your slave, and I am under Your covenant and pledge (to fulfil it) to the best of my ability. I seek Your protection from the evil that I have done. I acknowledge the favours that You have bestowed upon me, and I admit my sins. Forgive me, for none forgives sins but You."]
@@ -68,6 +69,7 @@ const DHIKR = [
   },
   {
     n: 7, when: "both", source: "Nasā’ī", repeat: 1,
+    audio: { morning: 88, evening: 88 },
     video: { morning: "14:36", evening: "11:48" },
     ar: ["يَا حَيُّ يَا قَيُّوْمُ، بِرَحْمَتِكَ أَسْتَغِيْثُ، أَصْلِحْ لِيْ شَأْنِيْ كُلَّهُ، وَلَا تَكِلْنِيْ إِلَىٰ نَفْسِيْ طَرْفَةَ عَيْنٍ."],
     en: ["O the Ever Living, the One Who sustains and protects all that exists; I seek assistance through Your mercy. Rectify all of my affairs and do not entrust me to myself for the blink of an eye."]
@@ -75,25 +77,25 @@ const DHIKR = [
 
   {
     n: 8, when: "morning", source: "Abū Dāwūd", repeat: 1,
+    audio: { morning: 81 },
     video: { morning: "8:52" },
     ar: ["اللَّهُمَّ مَا أَصْبَحَ بِيْ مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ، فَمِنْكَ وَحْدَكَ لَا شَرِيْكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ."],
     en: ["O Allah, all the favours that I or anyone from Your creation has received in the morning, are from You Alone. You have no partner. To You Alone belong all praise and all thanks."]
   },
   {
     n: 8, when: "evening", source: "Abū Dāwūd", repeat: 1,
-    audio: { evening: 81 },
     ar: ["اللَّهُمَّ مَا أَمْسَىٰ بِيْ مِنْ نِعْمَةٍ أَوْ بِأَحَدٍ مِنْ خَلْقِكَ، فَمِنْكَ وَحْدَكَ لَا شَرِيْكَ لَكَ، فَلَكَ الْحَمْدُ وَلَكَ الشُّكْرُ."],
     en: ["O Allah, all the favours that I or anyone from Your creation has received in the evening, are from You Alone. You have no partner. To You Alone belong all praise and all thanks."]
   },
   {
     n: 9, when: "morning", source: "Nasā’ī", repeat: 1,
+    audio: { morning: 90 },
     video: { morning: "15:20" },
     ar: ["أَصْبَحْنَا عَلَىٰ فِطْرَةِ الْإِسْلَامِ، وَعَلَىٰ كَلِمَةِ الْإِخْلَاصِ، وَعَلَىٰ دِيْنِ نَبِيِّنَا مُحَمَّدٍ ﷺ، وَعَلَىٰ مِلَّةِ أَبِيْنَا إِبْرَاهِيْمَ حَنِيْفًا مُسْلِمًا وَمَا كَانَ مِنَ الْمُشْرِكِيْنَ."],
     en: ["We have entered the morning upon the natural religion of Islam, the word of pure faith (i.e. Shahādah), the religion of our Prophet Muhammad ﷺ and upon the way of our father Ibrāhīm, who turned away from all that is false, having surrendered to Allah, and he was not of the polytheists."]
   },
   {
     n: 9, when: "evening", source: "Nasā’ī", repeat: 1,
-    audio: { evening: 90 },
     ar: ["أَمْسَيْنَا عَلَىٰ فِطْرَةِ الْإِسْلَامِ، وَعَلَىٰ كَلِمَةِ الْإِخْلَاصِ، وَعَلَىٰ دِيْنِ نَبِيِّنَا مُحَمَّدٍ ﷺ، وَعَلَىٰ مِلَّةِ أَبِيْنَا إِبْرَاهِيْمَ حَنِيْفًا مُسْلِمًا وَمَا كَانَ مِنَ الْمُشْرِكِيْنَ."],
     en: ["We have entered the evening upon the natural religion of Islam, the word of pure faith (i.e. Shahādah), the religion of our Prophet Muhammad ﷺ and upon the way of our father Ibrāhīm, who turned away from all that is false, having surrendered to Allah, and he was not of the polytheists."]
   },
@@ -109,6 +111,7 @@ const DHIKR = [
   },
   {
     n: 11, when: "morning", source: "Muslim", repeat: 1,
+    audio: { morning: 77 },
     video: { morning: "5:20" },
     ar: ["أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلهِ وَالْحَمْدُ لِلهِ، لَا إِلَٰهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيْكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ، رَبِّ أَسْأَلُكَ خَيْرَ مَا فِيْ هَٰذَا الْيَوْمِ وَخَيْرَ مَا بَعْدَهُ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْ هَٰذَا الْيَوْمِ وَشَرِّ مَا بَعْدَهُ، رَبِّ أَعُوْذُ بِكَ مِنَ الْكَسَلِ وَسُوْءِ الْكِبَرِ، رَبِّ أَعُوْذُ بِكَ مِنْ عَذَابٍ فِي النَّارِ وَعَذَابٍ فِي الْقَبْرِ."],
     en: ["We have entered the morning and at this very time the whole kingdom belongs to Allah. All praise is due to Allah. There is no god but Allah, the One; He has no partner with Him. The entire kingdom belongs solely to Him, to Him is all praise due, and He is All-Powerful over everything. My Lord, I ask You for the good that is in this day and the good that follows it, and I seek Your protection from the evil that is in this day and from the evil that follows it. My Lord, I seek Your protection from laziness and the misery of old age. My Lord, I seek Your protection from the torment of the Hell-fire and the punishment of the grave."]
@@ -121,30 +124,31 @@ const DHIKR = [
   },
   {
     n: 12, when: "morning", source: "Abū Dāwūd", repeat: 1,
+    audio: { morning: 89 },
     video: { morning: "14:52" },
     ar: ["أَصْبَحْنَا وَأَصْبَحَ الْمُلْكُ لِلهِ رَبِّ الْعَالَمِيْنَ، اللَّهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ هَٰذَا الْيَوْمِ، فَتْحَهُ وَنَصْرَهُ وَنُوْرَهُ وَبَرَكَتَهُ وَهُدَاهُ، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْهِ وَشَرِّ مَا بَعْدَهُ."],
     en: ["We have entered the morning and at this very time the whole kingdom belongs to Allah, Lord of the Worlds. O Allah, I ask You for the goodness of this day: its victory, its help, its light, and its blessings and guidance. I seek Your protection from the evil that is in it and from the evil that follows it."]
   },
   {
     n: 12, when: "evening", source: "Abū Dāwūd", repeat: 1,
-    audio: { evening: 89 },
     ar: ["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلهِ رَبِّ الْعَالَمِيْنَ، اللَّهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ هَٰذِهِ اللَّيْلَةِ، فَتْحَهَا وَنَصْرَهَا وَنُوْرَهَا وَبَرَكَتَهَا وَهُدَاهَا، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْهَا وَشَرِّ مَا بَعْدَهَا."],
     en: ["We have entered the evening and at this very time the whole kingdom belongs to Allah, Lord of the Worlds. O Allah, I ask You for the goodness of this night: its victory, its help, its light, and its blessings and guidance. I seek Your protection from the evil that is in it and from the evil that follows it."]
   },
   {
     n: 13, when: "morning", source: "Abū Dāwūd", repeat: 4,
+    audio: { morning: 80 },
     video: { morning: "7:02" },
     ar: ["اللَّهُمَّ إِنِّيْ أَصْبَحْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيْعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللهُ، لَا إِلَٰهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيْكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُوْلُكَ."],
     en: ["O Allah, I have entered the morning and call upon You, the bearers of Your Throne, Your angels and all creation, to bear witness that surely You are Allah. There is no god but You Alone. You have no partners, and that Muhammad ﷺ is Your slave and Your Messenger."]
   },
   {
     n: 13, when: "evening", source: "Abū Dāwūd", repeat: 4,
-    audio: { evening: 80 },
     ar: ["اللَّهُمَّ إِنِّيْ أَمْسَيْتُ أُشْهِدُكَ، وَأُشْهِدُ حَمَلَةَ عَرْشِكَ وَمَلَائِكَتَكَ وَجَمِيْعَ خَلْقِكَ، أَنَّكَ أَنْتَ اللهُ، لَا إِلَٰهَ إِلَّا أَنْتَ وَحْدَكَ لَا شَرِيْكَ لَكَ، وَأَنَّ مُحَمَّدًا عَبْدُكَ وَرَسُوْلُكَ."],
     en: ["O Allah, I have entered the evening and call upon You, the bearers of Your Throne, Your angels and all creation, to bear witness that surely You are Allah. There is no god but You Alone. You have no partners, and that Muhammad ﷺ is Your slave and Your Messenger."]
   },
   {
     n: 14, when: "morning", source: "Tirmidhī", repeat: 1,
+    audio: { morning: 78 },
     video: { morning: "6:07" },
     ar: ["اللَّهُمَّ بِكَ أَصْبَحْنَا وَبِكَ أَمْسَيْنَا وَبِكَ نَحْيَا وَبِكَ نَمُوْتُ وَإِلَيْكَ النُّشُوْرُ."],
     en: ["O Allah, by You we have entered the morning and by You we enter upon the evening. By You, we live and we die, and to You is the resurrection."]
@@ -158,30 +162,35 @@ const DHIKR = [
 
   {
     n: 15, when: "both", source: "Ahmad", repeat: 3,
+    audio: { morning: 82, evening: 82 },
     video: { morning: "9:09", evening: "6:22" },
     ar: ["اللَّهُمَّ عَافِنِيْ فِيْ بَدَنِيْ، اللَّهُمَّ عَافِنِيْ فِيْ سَمْعِيْ، اللَّهُمَّ عَافِنِيْ فِيْ بَصَرِيْ، لَا إِلَٰهَ إِلَّا أَنْتَ، اللَّهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، وَأَعُوْذُ بِكَ مِنْ عَذَابِ الْقَبْرِ، لَا إِلَٰهَ إِلَّا أَنْتَ."],
     en: ["O Allah, grant me well-being in my body. O Allah, grant me well-being in my hearing. O Allah, grant me well-being in my sight. There is no god but You. O Allah, I seek Your protection from disbelief and poverty and I seek Your protection from the punishment of the grave. There is no god but You."]
   },
   {
     n: 16, when: "both", source: "Abū Dāwūd", repeat: 7,
+    audio: { morning: 83, evening: 83 },
     video: { morning: "10:45", evening: "7:58" },
     ar: ["حَسْبِيَ اللهُ لَا إِلَٰهَ إِلَّا هُوَ عَلَيْهِ تَوَكَّلْتُ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيْمِ."],
     en: ["Allah is sufficient for me. There is no god but Him. I have placed my trust in Him only and He is the Lord of the Magnificent Throne."]
   },
   {
     n: 17, when: "both", source: "Tirmidhī", repeat: 3,
+    audio: { morning: 87, evening: 87 },
     video: { morning: "13:59", evening: "11:11" },
     ar: ["رَضِيْتُ بِاللهِ رَبًّا، وَبِالْإِسْلَامِ دِيْنًا، وَبِمُحَمَّدٍ ﷺ نَبِيًّا."],
     en: ["I am pleased with Allah as my Lord, with Islām as my religion and with Muhammad ﷺ as my Prophet."]
   },
   {
     n: 18, when: "both", source: "Tirmidhī", repeat: 3,
+    audio: { morning: 86, evening: 86 },
     video: { morning: "13:20", evening: "10:32" },
     ar: ["بِسْمِ اللهِ الَّذِيْ لَا يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ، وَهُوَ السَّمِيْعُ الْعَلِيْمُ."],
     en: ["In the Name of Allah, with whose Name nothing can harm in the earth nor in the sky. He is the All-Hearing and All-Knowing."]
   },
   {
     n: 19, when: "both", source: "Muslim", repeat: 100,
+    audio: { morning: 91, evening: 91 },
     video: { morning: "15:48", evening: "12:03" },
     ar: ["سُبْحَانَ اللهِ وَبِحَمْدِهِ."],
     en: ["Allah is free from imperfection, and all praise is due to Him."]
@@ -193,7 +202,7 @@ const DHIKR = [
   },
   {
     n: 21, when: "both", source: "Bukhārī / Nasā’ī", repeat: 100,
-    audio: { evening: 93 },
+    audio: { morning: 93, evening: 93 },
     video: { morning: "15:56" },
     ar: ["لَا إِلَٰهَ إِلَّا اللهُ وَحْدَهُ لَا شَرِيْكَ لَهُ، لَهُ الْمُلْكُ وَلَهُ الْحَمْدُ، وَهُوَ عَلَىٰ كُلِّ شَيْءٍ قَدِيْرٌ."],
     en: ["There is no god but Allah. He is Alone and He has no partner whatsoever. To Him Alone belong all sovereignty and all praise. He is over all things All-Powerful."]
@@ -206,12 +215,14 @@ const DHIKR = [
   },
   {
     n: 23, when: "morning", source: "Tabarānī", repeat: 100,
+    audio: { morning: 96 },
     video: { morning: "17:02" },
     ar: ["أَسْتَغْفِرُ اللهَ وَأَتُوْبُ إِلَيْهِ."],
     en: ["I seek Allah’s forgiveness and turn to Him in repentance."]
   },
   {
     n: 24, when: "morning", source: "Muslim", repeat: 3,
+    audio: { morning: 94 },
     video: { morning: "16:12" },
     ar: ["سُبْحَانَ اللهِ وَبِحَمْدِهِ، عَدَدَ خَلْقِهِ، وَرِضَا نَفْسِهِ، وَزِنَةَ عَرْشِهِ، وَمِدَادَ كَلِمَاتِهِ."],
     en: ["Allah is free from imperfection and all praise is due to Him, (in ways) as numerous as all He has created, (as vast) as His pleasure, (as limitless) as the weight of His Throne, and (as endless) as the ink of His words."]
