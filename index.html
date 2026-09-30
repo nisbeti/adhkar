@@ -588,7 +588,13 @@ function toSeconds(time) {
 function listenLink(dhikr, lang) {
   const time = dhikr.video && dhikr.video[currentList];
   const id = typeof VIDEOS !== "undefined" && VIDEOS[currentList];
-  if (!time || !id) { return ""; }
+  if (!time || !id) {
+    /* Fallback: a single-dhikr recording from HisnMuslim.com. */
+    const clip = dhikr.audio && dhikr.audio[currentList];
+    if (!clip) { return ""; }
+    const clipLabel = lang === "ar" ? "▶ استمع" : "▶ Listen";
+    return `<a class="listen" href="http://www.hisnmuslim.com/audio/ar/${clip}.mp3" target="_blank" rel="noopener">${clipLabel}</a>`;
+  }
   const label = lang === "ar" ? `▶ استمع من ${toArabicDigits(time)}` : `▶ Listen from ${time}`;
   return `<a class="listen" href="https://www.youtube.com/watch?v=${id}&t=${toSeconds(time)}s" target="_blank" rel="noopener">${label}</a>`;
 }
