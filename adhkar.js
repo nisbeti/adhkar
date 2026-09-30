@@ -51,9 +51,10 @@ const DHIKR = [
     en: ["O Allah, You are my Lord. There is no god except You. You have created me, and I am Your slave, and I am under Your covenant and pledge (to fulfil it) to the best of my ability. I seek Your protection from the evil that I have done. I acknowledge the favours that You have bestowed upon me, and I admit my sins. Forgive me, for none forgives sins but You."]
   },
   {
-    n: 4, when: "both", source: "Abū Dāwūd", repeat: 1,
-    ar: ["اللَّهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَأَعُوْذُ بِكَ مِنَ الْعَجْزِ وَالْكَسَلِ، وَأَعُوْذُ بِكَ مِنَ الْجُبْنِ وَالْبُخْلِ، وَأَعُوْذُ بِكَ مِنْ غَلَبَةِ الدَّيْنِ وَقَهْرِ الرِّجَالِ."],
-    en: ["O Allah, I seek Your protection from anxiety and grief. I seek Your protection from inability and laziness. I seek Your protection from cowardice and miserliness and I seek Your protection from being overcome by debt and being overpowered by men."]
+    n: 4, when: "both", source: "Bukhārī", repeat: 1,
+    audio: { morning: 121, evening: 121 },
+    ar: ["اللَّهُمَّ إِنِّيْ أَعُوْذُ بِكَ مِنَ الْهَمِّ وَالْحَزَنِ، وَالْعَجْزِ وَالْكَسَلِ، وَالْبُخْلِ وَالْجُبْنِ، وَضَلَعِ الدَّيْنِ وَغَلَبَةِ الرِّجَالِ."],
+    en: ["O Allah, I seek Your protection from anxiety and grief, from inability and laziness, from miserliness and cowardice, and from the burden of debt and being overpowered by men."]
   },
   {
     n: 5, when: "both", source: "Abū Dāwūd", repeat: 1,
@@ -102,6 +103,7 @@ const DHIKR = [
   },
   {
     n: 10, when: "morning", source: "Nasā’ī", repeat: 3,
+    audio: { morning: "https://www.youtube.com/shorts/rZUlcxqV_e4" },
     ar: ["أَصْبَحْتُ أُثْنِيْ عَلَيْكَ حَمْدًا، وَأَشْهَدُ أَنْ لَا إِلَٰهَ إِلَّا اللهُ."],
     en: ["I have entered the morning praising You, and I bear witness that there is no god but Allah."]
   },
@@ -132,6 +134,7 @@ const DHIKR = [
   },
   {
     n: 12, when: "evening", source: "Abū Dāwūd", repeat: 1,
+    audio: { evening: "https://www.youtube.com/shorts/4MdGRzPATTw" },
     ar: ["أَمْسَيْنَا وَأَمْسَى الْمُلْكُ لِلهِ رَبِّ الْعَالَمِيْنَ، اللَّهُمَّ إِنِّيْ أَسْأَلُكَ خَيْرَ هَٰذِهِ اللَّيْلَةِ، فَتْحَهَا وَنَصْرَهَا وَنُوْرَهَا وَبَرَكَتَهَا وَهُدَاهَا، وَأَعُوْذُ بِكَ مِنْ شَرِّ مَا فِيْهَا وَشَرِّ مَا بَعْدَهَا."],
     en: ["We have entered the evening and at this very time the whole kingdom belongs to Allah, Lord of the Worlds. O Allah, I ask You for the goodness of this night: its victory, its help, its light, and its blessings and guidance. I seek Your protection from the evil that is in it and from the evil that follows it."]
   },
