@@ -429,6 +429,63 @@
     #aboutClose:hover { color: var(--accent); border-color: var(--accent); }
     .nav:hover { opacity: 1; border-color: var(--accent); color: var(--accent); }
   }
+  /* First-visit tip that points at the Arabic font button. */
+  #fontTip {
+    position: fixed;
+    z-index: 20;
+    width: min(16.5rem, calc(100vw - 2rem));
+    padding: .8rem .95rem .75rem;
+    border-radius: 1rem;
+    background: var(--accent);
+    color: var(--on-accent, #fff);
+    box-shadow: 0 12px 32px rgba(40, 20, 0, .28);
+    direction: ltr;
+    text-align: left;
+    font-size: .98rem;
+    line-height: 1.45;
+    animation: tip-in .25s ease-out;
+  }
+  #fontTip[hidden] { display: none; }
+  /* The dark theme's accent is light, so the tip uses dark text there. */
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) #fontTip { --on-accent: #1c1a16; } }
+  :root[data-theme="dark"] #fontTip { --on-accent: #1c1a16; }
+  #fontTip::before {
+    content: "";
+    position: absolute;
+    top: -7px;
+    left: var(--arrow-x, 2rem);
+    width: 14px;
+    height: 14px;
+    margin-left: -7px;
+    background: var(--accent);
+    transform: rotate(45deg);
+    border-radius: 2px 0 0 0;
+  }
+  #fontTip p { margin: 0 0 .6rem; }
+  #fontTip .tip-actions { display: flex; justify-content: flex-end; }
+  #fontTipClose {
+    background: var(--on-accent, #fff);
+    color: var(--accent);
+    border: 0;
+    border-radius: 999px;
+    padding: .25rem .9rem;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .font-toggle.tip-target {
+    border-color: var(--accent);
+    color: var(--accent);
+    animation: tip-pulse 1.6s ease-out infinite;
+  }
+  @keyframes tip-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes tip-pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+    100% { box-shadow: 0 0 0 10px transparent; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #fontTip, .font-toggle.tip-target { animation: none; }
+  }
 </style>
 </head>
 <body>
@@ -456,6 +513,11 @@
   <div id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div></div></div>
   <button class="size-btn" id="largerText" type="button" aria-label="Larger text">+</button>
 </footer>
+
+<div id="fontTip" role="dialog" aria-labelledby="fontTipText" lang="en" hidden>
+  <p id="fontTipText">Tap here to change the Arabic script: Amiri, IndoPak or Uthmani.</p>
+  <div class="tip-actions"><button id="fontTipClose" type="button">Got it</button></div>
+</div>
 
 <dialog id="about" aria-labelledby="aboutTitle" lang="en">
   <div class="about-inner">
@@ -777,6 +839,7 @@ function updateUi() {
   progress.setAttribute("aria-valuenow", String(Math.round(percent)));
   prevBtn.disabled = currentIndex === 0;
   nextBtn.disabled = currentIndex === pages.length - 1;
+  scheduleFontTip();
 }
 
 nextBtn.addEventListener("click", () => goTo(currentIndex + 1));
@@ -938,6 +1001,82 @@ track.addEventListener("click", event => {
   applyFont();
 });
 
+/* ---------- First-visit font tip ---------- */
+/* Points at the font button the first time an Arabic page is shown. Add ?fonttip to the address to see it again. */
+const FONT_TIP_KEY = "adhkar:fontTipSeen";
+const fontTip = document.getElementById("fontTip");
+let fontTipTimer = null;
+let fontTipTarget = null;
+
+function fontTipWanted() {
+  return readStorage(FONT_TIP_KEY) !== "1";
+}
+
+function hideFontTip() {
+  fontTip.hidden = true;
+  if (fontTipTarget) { fontTipTarget.classList.remove("tip-target"); }
+  fontTipTarget = null;
+}
+
+function dismissFontTip() {
+  writeStorage(FONT_TIP_KEY, "1");
+  clearTimeout(fontTipTimer);
+  hideFontTip();
+}
+
+function showFontTip() {
+  hideFontTip();
+  const page = pages[currentIndex];
+  if (!fontTipWanted() || !page || !page.classList.contains("arabic") || about.open) { return; }
+  const button = page.querySelector(".font-toggle");
+  if (!button) { return; }
+  const rect = button.getBoundingClientRect();
+  if (rect.width === 0 || rect.bottom < 0 || rect.top > window.innerHeight) { return; }
+
+  fontTip.hidden = false;
+  const tipWidth = fontTip.offsetWidth;
+  const margin = 16;
+  const centre = rect.left + rect.width / 2;
+  const left = Math.max(margin, Math.min(centre - tipWidth / 2, window.innerWidth - tipWidth - margin));
+  fontTip.style.left = `${left}px`;
+  fontTip.style.top = `${rect.bottom + 12}px`;
+  fontTip.style.setProperty("--arrow-x", `${Math.max(18, Math.min(centre - left, tipWidth - 18))}px`);
+  fontTipTarget = button;
+  button.classList.add("tip-target");
+}
+
+/* Wait for swipes, scrolls and resizes to settle before placing the tip. */
+function scheduleFontTip(delay = 250) {
+  if (!fontTipWanted()) { return; }
+  clearTimeout(fontTipTimer);
+  fontTipTimer = setTimeout(showFontTip, delay);
+}
+
+function initFontTip() {
+  if (new URLSearchParams(location.search).has("fonttip")) {
+    try { localStorage.removeItem(FONT_TIP_KEY); } catch (_) { /* storage unavailable */ }
+  }
+  if (!fontTipWanted()) { return; }
+  document.getElementById("fontTipClose").addEventListener("click", dismissFontTip);
+  /* Using the button is the lesson, so it also dismisses the tip. */
+  track.addEventListener("click", event => {
+    if (event.target.closest(".font-toggle")) { dismissFontTip(); }
+  });
+  track.addEventListener("scroll", () => {
+    if (!fontTipWanted()) { return; }
+    hideFontTip();
+    scheduleFontTip();
+  }, { capture: true, passive: true });
+  window.addEventListener("resize", () => { hideFontTip(); scheduleFontTip(); });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && !fontTip.hidden) { dismissFontTip(); }
+  });
+  document.getElementById("aboutBtn").addEventListener("click", hideFontTip);
+  about.addEventListener("close", () => scheduleFontTip());
+  /* Give the fonts a moment so the button is in its final place. */
+  document.fonts.ready.then(() => scheduleFontTip(500));
+}
+
 /* ---------- About ---------- */
 document.getElementById("aboutBtn").addEventListener("click", () => about.showModal());
 document.getElementById("aboutClose").addEventListener("click", () => about.close());
@@ -1005,6 +1144,7 @@ if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
 
 applyTheme();
 applyFont();
+initFontTip();
 applyTextScale();
 showSection(savedSection());
 livePageVersion().then(version => { loadedPageVersion = version; });
