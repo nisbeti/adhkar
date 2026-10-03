@@ -240,7 +240,11 @@
     font-family: "KFGQPC Uthmanic Hafs", "Amiri Quran", serif;
   }
   /* This font draws ۝ as an empty ring, so place the verse number inside it. */
-  :root[data-font="hafs"] .ayah-end { position: relative; }
+  /* Amiri needs ۝ and its digits as one run of text to draw the number inside the ring (Safari will not shape
+     across an element boundary), while the Uthmani font needs the digits positioned over its empty ring. */
+  .ring-hafs { display: none; }
+  :root[data-font="hafs"] .ring-amiri { display: none; }
+  :root[data-font="hafs"] .ring-hafs { display: inline; position: relative; }
   :root[data-font="hafs"] .ayah-digits {
     position: absolute;
     inset: 0;
@@ -635,7 +639,7 @@ function buildDhikrPage(dhikr, position, total, lang) {
   const title = rawTitle ? markJalalah(rawTitle, lang) : "";
   /* Number each verse-end mark (۝) in Qur'anic passages, as on the Kahf pages. */
   let ayah = 0;
-  const numberAyat = html => html.replace(/\s*۝/g, () => ` <span class="ayah-end">&#x06DD;<span class="ayah-digits">${toArabicDigits(++ayah)}</span></span>`);
+  const numberAyat = html => html.replace(/\s*۝/g, () => { const digits = toArabicDigits(++ayah); return ` <span class="ayah-end"><span class="ring-amiri">&#x06DD;${digits}</span><span class="ring-hafs">&#x06DD;<span class="ayah-digits">${digits}</span></span></span>`; });
   const paragraphs = (lang === "ar" ? dhikr.ar : dhikr.en)
     .map(p => `<p>${lang === "ar" ? numberAyat(markJalalah(p, lang)) : markJalalah(p, lang)}</p>`)
     .join("");
@@ -665,7 +669,7 @@ function buildVersePage(verses, position, total, lang) {
   let body;
   if (lang === "ar") {
     const uthmani = verses
-      .map(verse => `${markJalalahArabic(verse.ar)} <span class="ayah-end" ${verseAttrs(verse.n)}>&#x06DD;<span class="ayah-digits">${toArabicDigits(verse.n)}</span></span>`)
+      .map(verse => `${markJalalahArabic(verse.ar)} <span class="ayah-end" ${verseAttrs(verse.n)}><span class="ring-amiri">&#x06DD;${toArabicDigits(verse.n)}</span><span class="ring-hafs">&#x06DD;<span class="ayah-digits">${toArabicDigits(verse.n)}</span></span></span>`)
       .join(" ");
     /* The IndoPak text carries its own numbered verse icons, drawn by the IndoPak font. */
     /* The verse-end sign is one private-use character (U+F500 + verse − 1); wrapping it keeps its look. */
