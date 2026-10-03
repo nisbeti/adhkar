@@ -316,7 +316,13 @@
     direction: ltr;
     padding: 0 1.25rem calc(.5rem + env(safe-area-inset-bottom));
   }
-  #progress { flex: 1 1 auto; }
+  /* Pages move right to left as you swipe forward, so the bar fills from the right. */
+  #progress { flex: 1 1 auto; direction: rtl; }
+  /* − and + joined into one pill. */
+  .size-pair { flex: 0 0 auto; display: flex; }
+  .size-pair .size-btn { width: 2.6rem; border-radius: 0; }
+  .size-pair .size-btn:first-child { border-radius: 999px 0 0 999px; border-right-width: 0; }
+  .size-pair .size-btn:last-child { border-radius: 0 999px 999px 0; }
   .size-btn {
     flex: 0 0 auto;
     width: 2.1rem;
@@ -509,9 +515,11 @@
 
 <footer>
   <button class="size-btn" id="aboutBtn" type="button" aria-label="About and credits" aria-haspopup="dialog">i</button>
-  <button class="size-btn" id="smallerText" type="button" aria-label="Smaller text">−</button>
   <div id="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div></div></div>
-  <button class="size-btn" id="largerText" type="button" aria-label="Larger text">+</button>
+  <div class="size-pair" role="group" aria-label="Text size">
+    <button class="size-btn" id="smallerText" type="button" aria-label="Smaller text">−</button>
+    <button class="size-btn" id="largerText" type="button" aria-label="Larger text">+</button>
+  </div>
 </footer>
 
 <div id="fontTip" role="dialog" aria-labelledby="fontTipText" lang="en" hidden>
