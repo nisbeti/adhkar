@@ -732,7 +732,13 @@ function buildDhikrPage(dhikr, position, total, lang) {
   const title = rawTitle ? markJalalah(rawTitle, lang) : "";
   /* Number each verse-end mark (۝) in Qur'anic passages, as on the Kahf pages. */
   let ayah = 0;
-  const numberAyat = html => html.replace(/\s*۝/g, () => { const digits = toArabicDigits(++ayah); return ` <span class="ayah-end"><span class="ring-amiri">&#x06DD;${digits}</span><span class="ring-hafs">&#x06DD;<span class="ayah-digits">${digits}</span></span></span>`; });
+  /* Qur'anic adhkar give their sūrah and first verse, so the numbers match the muṣḥaf and each one plays its verse. */
+  if (dhikr.ayah) { ayah = dhikr.ayah - 1; }
+  const numberAyat = html => html.replace(/\s*۝/g, () => {
+    const digits = toArabicDigits(++ayah);
+    const attrs = dhikr.surah ? ` ${verseAttrs(ayah, dhikr.surah)}` : "";
+    return ` <span class="ayah-end"${attrs}><span class="ring-amiri">&#x06DD;${digits}</span><span class="ring-hafs">&#x06DD;<span class="ayah-digits">${digits}</span></span></span>`;
+  });
   const paragraphs = (lang === "ar" ? dhikr.ar : dhikr.en)
     .map(p => `<p>${lang === "ar" ? numberAyat(markJalalah(p, lang)) : markJalalah(p, lang)}</p>`)
     .join("");
@@ -748,8 +754,8 @@ function buildDhikrPage(dhikr, position, total, lang) {
 }
 
 /* A verse number doubles as a button that recites that verse. */
-function verseAttrs(n) {
-  return `data-ayah="${n}" role="button" tabindex="0" aria-label="Play verse ${n}"`;
+function verseAttrs(n, surah = 18) {
+  return `data-surah="${surah}" data-ayah="${n}" role="button" tabindex="0" aria-label="Play verse ${surah}:${n}"`;
 }
 
 function buildVersePage(verses, position, total, lang) {
@@ -955,7 +961,7 @@ function playVerse(target) {
   const wasPlaying = recitation && recitation.button === target;
   stopRecitation();
   if (wasPlaying) { return; }
-  recitation = { button: target, queue: [verseFile(18, Number(target.dataset.ayah))] };
+  recitation = { button: target, queue: [verseFile(Number(target.dataset.surah) || 18, Number(target.dataset.ayah))] };
   playNextVerse();
 }
 

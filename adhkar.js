@@ -13,18 +13,23 @@ const VIDEOS = {
  * e.g. audio: { morning: 79, evening: 79 }, or a full https:// link to a single-dhikr recording elsewhere.
  * It is used in preference to the video. */
 
+/* A Qur'anic dhikr gives its sūrah and first verse (surah, ayah); each ۝ in its Arabic is then numbered
+ * from that verse and plays the verse's recitation when tapped. */
+
 /* when: "both" | "morning" | "evening".  A dhikr numbered 8–14 has a morning and an evening wording. */
 const DHIKR = [
   {
     n: 1, when: "both", source: "Tabarānī", repeat: 1,
     video: { morning: "0:05", evening: "0:02" },
+    surah: 2, ayah: 255,
     title_ar: "آية الكرسي", title_en: "Āyat al-Kursī (2:255)",
-    ar: ["اللهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ، لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ، لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ، مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ، يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ، وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ، وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ، وَلَا يَؤُودُهُ حِفْظُهُمَا، وَهُوَ الْعَلِيُّ الْعَظِيمُ."],
+    ar: ["اللهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ، لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ، لَهُ مَا فِي السَّمَاوَاتِ وَمَا فِي الْأَرْضِ، مَنْ ذَا الَّذِي يَشْفَعُ عِنْدَهُ إِلَّا بِإِذْنِهِ، يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ، وَلَا يُحِيطُونَ بِشَيْءٍ مِنْ عِلْمِهِ إِلَّا بِمَا شَاءَ، وَسِعَ كُرْسِيُّهُ السَّمَاوَاتِ وَالْأَرْضَ، وَلَا يَؤُودُهُ حِفْظُهُمَا، وَهُوَ الْعَلِيُّ الْعَظِيمُ ۝"],
     en: ["Allah, there is no god but Him, the Living, the Self-Sustaining. He is not subject to drowsiness or sleep. Everything in the heavens and the earth belongs to Him. Who can intercede with Him except by His permission? He knows what is before them and what is behind them but they cannot grasp any of His knowledge save what He wills. His Footstool encompasses the heavens and the earth and their preservation does not tire Him. He is the Most High, the Magnificent."]
   },
   {
     n: 2, when: "both", source: "Tirmidhī", repeat: 3,
     video: { morning: "1:10", evening: "1:09" },
+    surah: 112, ayah: 1,
     title_ar: "سورة الإخلاص", title_en: "Sūrah al-Ikhlāṣ (112)",
     ar: ["قُلْ هُوَ اللهُ أَحَدٌ ۝ اللهُ الصَّمَدُ ۝ لَمْ يَلِدْ وَلَمْ يُولَدْ ۝ وَلَمْ يَكُنْ لَهُ كُفُوًا أَحَدٌ ۝"],
     en: ["Say: 'He is Allah, Absolute Oneness, Allah, the Everlasting Sustainer of all. He has not given birth and was not born. And no one is comparable to Him.'"]
@@ -32,6 +37,7 @@ const DHIKR = [
   {
     n: 2, when: "both", source: "Tirmidhī", repeat: 3,
     video: { morning: "2:05", evening: "2:09" },
+    surah: 113, ayah: 1,
     title_ar: "سورة الفلق", title_en: "Sūrah al-Falaq (113)",
     ar: ["قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ ۝ مِنْ شَرِّ مَا خَلَقَ ۝ وَمِنْ شَرِّ غَاسِقٍ إِذَا وَقَبَ ۝ وَمِنْ شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ ۝ وَمِنْ شَرِّ حَاسِدٍ إِذَا حَسَدَ ۝"],
     en: ["Say: 'I seek refuge with the Lord of Daybreak, from the evil of what He has created and from the evil of the darkness when it gathers and from the evil of women who blow on knots and from the evil of an envier when he envies.'"]
@@ -39,6 +45,7 @@ const DHIKR = [
   {
     n: 2, when: "both", source: "Tirmidhī", repeat: 3,
     video: { morning: "3:30", evening: "3:27" },
+    surah: 114, ayah: 1,
     title_ar: "سورة الناس", title_en: "Sūrah al-Nās (114)",
     ar: ["قُلْ أَعُوذُ بِرَبِّ النَّاسِ ۝ مَلِكِ النَّاسِ ۝ إِلَٰهِ النَّاسِ ۝ مِنْ شَرِّ الْوَسْوَاسِ الْخَنَّاسِ ۝ الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ ۝ مِنَ الْجِنَّةِ وَالنَّاسِ ۝"],
     en: ["Say: 'I seek refuge with the Lord of mankind, the King of mankind, the God of mankind, from the evil of the insidious whisperer who whispers in people's breasts and comes from the jinn and from mankind.'"]
